@@ -1,0 +1,10 @@
+django==4.2.7
+djangorestframework==3.14
+django-cors-headers==4.3
+django-filter
+django-url-filter
+django-import-export==3.3.1
+django-mptt==0.15.0 
+django-tinymce==3.6.1
+mysqlclient==2.2.0
+pillow==10.1.0

@@ -1,0 +1,8 @@
+{% extends "layouts/base.html" %}
+
+
+{% block content %}
+    {% include "includes/sections/breadcrumb.html" %}
+    {% include "includes/sections/cluster.html" with objs=object_list parent='' %}
+    {% include "includes/sections/category-list.html" with reviews=object_list|slice:":5" %}
+{% endblock %}
