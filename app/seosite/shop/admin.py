@@ -25,7 +25,6 @@ class ProductAdmin(ExportActionModelAdmin, admin.ModelAdmin):
     search_fields = ("title", "description", "asin", "slug")
     list_filter = ("visible", "featured", "categories")
     form = ProductForm
-    change_form_template = "admin/product_changeform.html"
     list_per_page = 10
 
     def save_related(self, request, form, formsets, change):
@@ -39,9 +38,8 @@ class ProductAdmin(ExportActionModelAdmin, admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ("image", "large_tag", "position", "product")
+    list_display = ("image_tag", "position", "product")
     search_fields = ("product", "image")
-    # list_filter = ("product__categories",)
     form = ProductImageForm
     list_per_page = 10
 
