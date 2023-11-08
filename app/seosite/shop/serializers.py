@@ -14,6 +14,10 @@ class CategoryPrimaryKeyRelatedSerializer(serializers.PrimaryKeyRelatedField, se
         fields = "__all__"
 
 
+class SearchByExternalReferenceSerializer(serializers.Serializer):
+    ext_ref = serializers.CharField()
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

@@ -6,6 +6,7 @@ from .serializers import (
     ProductImageSerializer,
     ProductExternalUpdateSerializer,
     ReviewSerializer,
+    SearchByExternalReferenceSerializer,
 )
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
@@ -83,10 +84,24 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+    @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
+    def search_ext_ref(self, request):
+        if "ext_ref" in request.data:
+            category = Category.objects.get(ext_ref=request.data["ext_ref"])
+            return Response(CategorySerializer(category).data) if category else Response()
+        return Response()
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
+    def search_ext_ref(self, request):
+        if "ext_ref" in request.data:
+            product = Product.objects.get(ext_ref=request.data["ext_ref"])
+            return Response(CategorySerializer(product).data) if product else Response()
+        return Response()
 
     #  permission_classes=[permissions.IsAuthenticated]
     @action(detail=False, methods=["post"], serializer_class=ProductExternalUpdateSerializer)
@@ -107,21 +122,22 @@ class ProductViewSet(viewsets.ModelViewSet):
             def update_or_create_images(images, product):
                 position = 0
                 for image in images:
+                    image["position"] = position  # Maybe better in client
+                    image["product"] = product
                     try:
-                        image["position"] = position  # Maybe better in client
-                        image["product"] = product
                         _image, created = ProductImage.objects.update_or_create(small=image["small"], defaults=image)
                         position += 1
                         images_created.append(
                             ProductImageSerializer(_image).data
                         ) if created else images_updated.append(ProductImageSerializer(_image).data)
                     except Exception as e:
-                        images_errored.append(image)
+                        del image["product"]
+                        images_errored.append(image.pk)
 
             def update_or_create_reviews(reviews, product):
                 for review in reviews:
+                    review["product"] = product  # Maybe better in client
                     try:
-                        review["product"] = product  # Maybe better in client
                         _review, created = Review.objects.update_or_create(
                             product=product, text=review["text"], defaults=review
                         )
@@ -129,6 +145,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                             ReviewSerializer(_review).data
                         )
                     except Exception as e:
+                        del review["product"]
                         reviews_errored.append(review)
 
             def add_categories(categories, product):
