@@ -8,3 +8,4 @@ django-mptt==0.15.0
 django-tinymce==3.6.1
 mysqlclient==2.2.0
 pillow==10.1.0
+gunicorn
