@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category, Product, ProductImage, Review
 from .serializers import (
     CategorySerializer,
@@ -13,6 +14,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+# from rest_framework.parsers import MultiPartParser, FormParser
 
 
 # Website Views
@@ -79,13 +81,28 @@ class CategoryDetailView(DetailView):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    search_fields = ['author', 'title', 'product__title', 'product__ext_ref']
+    filterset_fields = "__all__"
+    ordering_fields = "__all__"
+    ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    search_fields = ['title', 'ext_ref']
+    filterset_fields = ["parent", "featured", "visible"]
+    ordering_fields = "__all__"
+    ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
+    # parser_classes = [MultiPartParser, FormParser]
+
+    # def create(self, request, *args, **kwargs):
+    #     image = request.data["image"]
+    #     return super().create(request, *args, **kwargs)
 
     @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
     def search_ext_ref(self, request):
@@ -98,6 +115,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    search_fields = ['title', 'ext_ref']
+    filterset_fields = "__all__"
+    ordering_fields = "__all__"
+    ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
@@ -107,7 +129,6 @@ class ProductViewSet(viewsets.ModelViewSet):
             return Response(CategorySerializer(product).data) if product else Response()
         return Response()
 
-    #  permission_classes=[permissions.IsAuthenticated]
     @action(detail=False, methods=["post"], serializer_class=ProductExternalUpdateSerializer)
     def external_update(self, request):
         if "products" in request.data:
@@ -273,4 +294,9 @@ class ProductViewSet(viewsets.ModelViewSet):
 class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
+    search_fields = ['product__title', 'product__ext_ref']
+    filterset_fields = "__all__"
+    ordering_fields = "__all__"
+    ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
