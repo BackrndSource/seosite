@@ -1,0 +1,82 @@
+{% extends "giftos/layouts/base.html" %}
+{% load static %}
+{% load shop_extras %}
+{% block title %}{{category.title}}{% endblock %}
+{% block meta_description %}{{category.description}}{% endblock %}
+{% block meta_keywords %}{{category.keywoords}}{% endblock %}
+
+<!-- FEATURED PRODUCTS -->
+{% block hero %}{% include "giftos/product/components/hero.html" with products=featured_products %}{% endblock %}
+
+
+{% block content %}
+
+
+<!-- CATEGORIES LIST -->
+{% include "giftos/category/components/nav.html" with categories=shop_categories active_category=active_category %}
+<!-- BREADCRUMB -->
+<!-- {% include "giftos/components/breadcrumb.html" with obj=category %} -->
+
+<!-- CLUSTER -->
+<!-- {% include "giftos/components/cluster.html" with objs=category.childs.all parent=category %} -->
+
+<!-- CATEGORY DETAILS - DESCRIPTION -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12" style="font-size: 1.25rem;">
+                {{category.description}}
+            </div>
+        </div>
+        {% if user.is_staff %}
+        <div class="row py-3">
+            <div class="col-12 d-flex justify-content-center align-items-center ">
+                <a target="_blank" href="/admin/shop/category/{{category.id}}/change" class="btn btn-primary mr-2"><i class="fa fa-edit"></i>
+                    Editar categoría {{category.title}}</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- SUB CATEGORIES LIST -->
+{% include "giftos/category/components/list.html" with categories=category.childs.all %}
+
+
+<!-- PROMO PRODUCTS -->
+{% if promo_products is not None %}
+{% include "giftos/product/components/list.html" with products=promo_products.all|slice:":4" title="Últimas oportunidades"%}
+{% endif %}
+
+<!-- CATEGORY DETAILS - TEXT -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {{category.text|safe}}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- BEST SELLING PRODUCTS -->
+{% if bestselling_products is not None %}
+{% include "giftos/product/components/list.html" with products=bestselling_products.all|slice:":4" title="Los más vendidos"%}
+{% endif %}
+
+
+<!-- REVIEWS LIST -->
+{% include "giftos/review/components/carousel.html" with title=category.title reviews=reviews %}
+
+<!-- BEST RATED PRODUCTS -->
+{% if bestrated_products is not None %}
+{% include "giftos/product/components/list.html" with products=bestrated_products.all|slice:":4" title="Mejor valorados"%}
+{% endif %}
+
+
+<!-- ALL PRODUCTS -->
+{% include "giftos/product/components/list.html" with products=category|products title="Todos los productos"%}
+
+
+{% endblock %}

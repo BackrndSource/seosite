@@ -1,0 +1,91 @@
+{% extends "giftos/layouts/base.html" %}
+{% load static %}
+{% load shop_extras %}
+{% block title %}{{category.title}}{% endblock %}
+{% block meta_description %}{{category.description}}{% endblock %}
+{% block meta_keywords %}{{category.keywoords}}{% endblock %}
+
+{% block content %}
+
+{% include "giftos/category/components/nav.html" with categories=shop_categories active_category=product.categories.last %}
+
+<!-- PRODUCT DETAILS  -->
+<section class="mb-5 pt-5 pb-4">
+    <div class="container-fluid mb-4 px-5">
+        <div class="row ">
+            <div class="col-md-5 offset-1">
+                <div class="carousel slide" data-ride="carousel" id="carousel-1">
+                    <div class="carousel-inner" role="listbox">
+                        {% for image in product.images.all %}
+                        <div class="carousel-item {% if forloop.first %} active {% endif %}" style="max-height: 30rem; height: 30rem;">
+                            <a target="_blank" href="{{product.url_affiliate}}">
+                                <img class="lazy img-thumbnail d-block h-100 w-auto" src="{{image.thumb}}" data-src="{{image.large}}"
+                                    alt="Imagen del producto">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <h4>{{product.title}}</h4>
+                <div class="my-1 d-flex gap-2 ">
+                    <p class="mr-2 text-success" style="font-size: 2.5rem;">{{product.price}}€</p>
+                    {% if product.real_price %}
+                    <span class="mx-2 text-danger pt-2">Antes: {{product.real_price}}€</span>
+                    {% endif %}
+                </div>
+                <div class="d-flex flex-row mb-2">
+                    <div class="icons mr-2">
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star text-warning"></i>
+                        <i class="fa fa-star-half-o text-warning"></i>
+                    </div>
+                    <span>{{product.rating_count}} valoraciones</span>
+                </div>
+                <div class="d-flex align-items-center mt-4 mb-1" style="font-size: 1.25rem;">
+                    <p>{{product.description}}</p>
+                </div>
+                <hr>
+                <a target="_blank" href="{{product.url_affiliate}}" class="btn btn-warning mt-2 text-white" type="button">COMPRAR EN AMAZON</a>
+            </div>
+        </div>
+
+        {% if user.is_staff %}
+        <div class="row pt-4">
+            <div class="col-12 d-flex justify-content-center">
+                <a target="_blank" href="/admin/shop/product/{{product.id}}/change" class="btn btn-primary mx-1"><i class="fa fa-edit"></i> Editar</a>
+                <a target="_blank" href="/admin/shop/product/{{product.id}}/delete" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+{% include "giftos/product/components/list.html" with products=product.categories.last|products|slice:":4" title="También te puede interesar" %}
+
+
+<!-- PRODUCT DETAILS - TEXT -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {{product.text|safe}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS LIST -->
+{% include "giftos/review/components/carousel.html" with title=product.title reviews=product.reviews.all %}
+
+
+
+<!-- CATEGORIES LIST -->
+{% include "giftos/category/components/list.html" with categories=product.categories.all %}
+
+
+{% endblock %}

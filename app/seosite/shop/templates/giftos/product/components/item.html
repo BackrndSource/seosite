@@ -1,0 +1,30 @@
+{% load humanize %}
+{% load shop_extras %}
+
+<div class="col-6 col-lg-4 col-xl-3 mt-4">
+    <div class="bg-white px-3 shadow pt-3 rounded-lg">
+        <a target="_blank" href="{{product.url_affiliate}}">
+            <img alt="Product image for {{product.title}}" class="lazy" width="100%" height="200px" src="{{ product.images.first.thumb }}"
+                data-src="{{ product.images.first.medium }}" />
+        </a>
+        <div class="detail-box pt-3">
+            <a href="{% url 'product-detail' product.pk %}">
+                <h3 class="lh-1 overflow-hidden" style="height: 6.1rem; color: black; font-size: 1.25rem;">
+                    {{product.title}}
+                </h3>
+            </a>
+            <span class="text-primary" style="font-size: 1.35rem;">
+                {{product.price}}€
+            </span>
+        </div>
+        <a target="_blank" style="color: white;" href="{{product.url_affiliate}}" class="btn btn-warning my-3">
+            Comprar ya
+        </a>
+
+        {% if user.is_staff %}
+        <a target="_blank" href="/admin/shop/product/{{product.id}}/change" class="btn btn-primary mx-1"><i class="fa fa-edit"></i></a>
+        <a target="_blank" href="/admin/shop/product/{{product.id}}/delete" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+        {% endif %}
+
+    </div>
+</div>

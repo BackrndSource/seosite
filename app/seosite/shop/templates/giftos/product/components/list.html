@@ -1,0 +1,17 @@
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 d-flex flex-wrap justify-content-center gap-2 pb-4">
+                <h2 class="text-uppercase font-weight-bold">{{title}}</h2>
+                {% if description %}
+                <p class="pt-3 text-center">{{description}}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            {% for product in products %}
+            {% include "giftos/product/components/item.html" with product=product %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
