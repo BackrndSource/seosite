@@ -4,11 +4,11 @@
 <section class="my-5">
     <div class="container">
         <div class="row">
-            <div class="col-12 d-flex flex-wrap justify-content-center gap-2 pb-4">
+            <div class="col-12 pb-4 text-center">
                 <a class="" style="font-size: 1.25rem; color: black;" href="{% url 'category-detail' category.pk %}">
                     <h2 class="text-uppercase font-weight-bold">{{category.title}}</h2>
                 </a>
-                <p class="pt-3 text-center">{{category.description}}</p>
+                <p class="pt-3">{{category.description}}</p>
                 <a class="" style="font-size: 1.25rem;" href="{% url 'category-detail' category.pk %}">Ver más...</a>
             </div>
 

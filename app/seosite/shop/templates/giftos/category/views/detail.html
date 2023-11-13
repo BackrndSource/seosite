@@ -8,17 +8,9 @@
 <!-- FEATURED PRODUCTS -->
 {% block hero %}{% include "giftos/product/components/hero.html" with products=featured_products %}{% endblock %}
 
-
 {% block content %}
-
-
-<!-- CATEGORIES LIST -->
+<!-- CATEGORIES NAV -->
 {% include "giftos/category/components/nav.html" with categories=shop_categories active_category=category %}
-<!-- BREADCRUMB -->
-<!-- {% include "giftos/components/breadcrumb.html" with obj=category %} -->
-
-<!-- CLUSTER -->
-<!-- {% include "giftos/components/cluster.html" with objs=category.childs.all parent=category %} -->
 
 <!-- CATEGORY DETAILS - DESCRIPTION -->
 <section class="my-5">
@@ -40,11 +32,12 @@
 </section>
 
 <!-- SUB CATEGORIES LIST -->
+{% if category.childs.all.count > 0 %}
 {% include "giftos/category/components/list.html" with categories=category.childs.all %}
-
+{% endif %}
 
 <!-- PROMO PRODUCTS -->
-{% if promo_products is not None %}
+{% if promo_products.count > 0 %}
 {% include "giftos/product/components/list.html" with products=promo_products.all|slice:":4" title="Últimas oportunidades"%}
 {% endif %}
 
@@ -61,22 +54,26 @@
 
 
 <!-- BEST SELLING PRODUCTS -->
-{% if bestselling_products is not None %}
+{% if bestselling_products.count > 0 %}
 {% include "giftos/product/components/list.html" with products=bestselling_products.all|slice:":4" title="Los más vendidos"%}
 {% endif %}
 
 
 <!-- REVIEWS LIST -->
+{% if reviews.count > 0 %}
 {% include "giftos/review/components/carousel.html" with title=category.title reviews=reviews %}
+{% endif %}
 
 <!-- BEST RATED PRODUCTS -->
-{% if bestrated_products is not None %}
+{% if bestrated_products.count > 0 %}
 {% include "giftos/product/components/list.html" with products=bestrated_products.all|slice:":4" title="Mejor valorados"%}
 {% endif %}
 
 
 <!-- ALL PRODUCTS -->
+{% if category|products is not None %}
 {% include "giftos/product/components/list.html" with products=category|products title="Todos los productos"%}
+{% endif %}
 
 
 {% endblock %}
