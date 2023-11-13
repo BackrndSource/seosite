@@ -95,8 +95,7 @@ class CategoryDetailView(DetailView):
 
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
 
-        context["active_category"] = self.get_object()
-
+        return context
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
