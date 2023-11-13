@@ -23,19 +23,40 @@ class HomeView(ListView):
     queryset = Category.objects.filter(parent=None)
 
 
+class ProductListView(ListView):
+    model = Category
+    queryset = Product.objects.filter(visible=True)
+    template_name = 'giftos/product/views/list.html'
+
+
 class ProductDetailView(DetailView):
     context_object_name = "product"
-    queryset = Product.objects.filter()
+    queryset = Product.objects.filter(visible=True)
+    template_name = 'giftos/product/views/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        return context
 
 
 class CategoryListView(ListView):
     model = Category
-    queryset = Category.objects.filter(parent=None)
+    queryset = Category.objects.filter(visible=True)
+    template_name = 'giftos/category/views/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+
+        return context
 
 
 class CategoryDetailView(DetailView):
     context_object_name = "category"
     queryset = Category.objects.all()
+    template_name = 'giftos/category/views/detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,7 +67,7 @@ class CategoryDetailView(DetailView):
         reviews = []
         for product in products:
             latest_obj = (
-                Review.objects.filter(product=product).order_by("-rating").first()
+                Review.objects.filter(product=product, product__visible=True).order_by("-rating").first()
             )  # Get only the best rated review per product in category
             if latest_obj:
                 reviews.append(latest_obj)
@@ -72,17 +93,16 @@ class CategoryDetailView(DetailView):
             "-rating", "-rating_count", "-last_modified"
         )
 
-        return context
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
 
-
-# Viewsets - API Views
+        context["active_category"] = self.get_object()
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
-    search_fields = ['author', 'title', 'product__title', 'product__ext_ref']
+    search_fields = ['title', 'product__ext_ref']
     filterset_fields = "__all__"
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
