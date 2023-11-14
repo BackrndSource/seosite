@@ -1,12 +1,26 @@
 {% extends "giftos/layouts/base.html" %}
-{% load static %}
 {% load shop_extras %}
-{% block title %}{{category.title}}{% endblock %}
-{% block meta_description %}{{category.description}}{% endblock %}
-{% block meta_keywords %}{{category.keywoords}}{% endblock %}
+
+{% block title %}{{product.title}}{% endblock %}
+{% block meta_description %}{{product.meta_description}}{% endblock %}
+{% block meta_keywords %}{{product.keywords}}{% endblock %}
+
+{% block og_title %}{{product.title}}{% endblock %}
+{% block og_description %}{{product.meta_description}}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block meta_extra %}
+<!-- OpenGraph Product Images -->
+{% for image in product.images.all %}
+<meta property="og:image" content="{{image.large}}" />
+{% endfor %}
+<!-- Canonical -->
+<link rel="canonical" href="{{product.url}}">
+{% endblock %}
 
 {% block content %}
 
+<!-- Navbar Categories -->
 {% include "giftos/category/components/nav.html" with categories=shop_categories active_category=product.categories.last %}
 
 <!-- PRODUCT DETAILS  -->
@@ -64,9 +78,8 @@
     </div>
 </section>
 
-
+<!-- PRODUCTS IN SAME CATEGORY LIST -->
 {% include "giftos/product/components/list.html" with products=product.categories.last|products|slice:":4" title="También te puede interesar" %}
-
 
 <!-- PRODUCT DETAILS - TEXT -->
 <section class="my-5">
@@ -84,6 +97,5 @@
 
 <!-- CATEGORIES LIST -->
 {% include "giftos/category/components/list.html" with categories=product.categories.all %}
-
 
 {% endblock %}
