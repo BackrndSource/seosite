@@ -99,3 +99,48 @@
 {% include "giftos/category/components/list.html" with categories=product.categories.all %}
 
 {% endblock %}
+{% block script_extra %} 
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "asin": "{{product.asin}}"
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "{{product.rating}}",
+            "reviewCount": "{{product.rating_count}}"
+        },
+        "description": "{{product.description}}",
+        "name": "{{product.title}}",
+        "image":  [
+            {% for image in product.images.all %}
+            "{{image.large}}",
+            {% endfor %}
+        ],
+        "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "price": "{{product.price}}",
+            "priceCurrency": "EUR"
+        },
+        "review": [
+            {% for review in product.reviews.all %}
+            {
+            "@type": "Review",
+            "author": "{{review.author}}",
+            "datePublished": "{{review.created_date}}",
+            "reviewBody": "{{review.text}}",
+            "name": "{{review.title}}",
+            "reviewRating": {
+                "@type": "Rating",
+                "bestRating": "5",
+                "ratingValue": "{{review.rating}}",
+                "worstRating": "1"
+            }
+            },
+            {% endfor %}
+        ]
+    }
+    </script>
+{% endblock %}
