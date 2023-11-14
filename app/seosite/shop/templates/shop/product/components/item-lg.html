@@ -2,7 +2,7 @@
 {% load shop_extras %}
 <div class="bg-white col-span-2 shadow-md rounded-lg grid grid-cols-3 py-6 px-6 gap-6">
     <div class="{% cycle 'text-right' 'order-last text-left' %} col-span-2  grid grid-cols-1 justify-between">
-        <a href="{% url 'product-detail' obj.pk %}" class="hover:text-gray-900">
+        <a href="{% url 'product-slug' obj.slug %}" class="hover:text-gray-900">
             <h3 class="text-xl">{{obj.title}}</h3>
         </a>
         <p class="text-sm h-24 overflow-hidden">{{obj.description}}</p>

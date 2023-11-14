@@ -15,7 +15,7 @@
 <meta property="og:image" content="{{image.large}}" />
 {% endfor %}
 <!-- Canonical -->
-<link rel="canonical" href="{{product.url}}">
+<link rel="canonical" href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{request.get_host}}{% url 'product-slug' product.slug %}">
 {% endblock %}
 
 {% block content %}

@@ -8,7 +8,7 @@
                 data-src="{{ product.images.first.medium }}" />
         </a>
         <div class="detail-box pt-3">
-            <a href="{% url 'product-detail' product.pk %}">
+            <a href="{% url 'product-slug' product.slug %}">
                 <h3 class="lh-1 overflow-hidden" style="height: 6.1rem; color: black; font-size: 1.25rem;">
                     {{product.title}}
                 </h3>
