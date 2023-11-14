@@ -12,6 +12,7 @@ from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 
 # Website Views
@@ -78,11 +79,13 @@ class CategoryDetailView(DetailView):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
     def search_ext_ref(self, request):
@@ -95,6 +98,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
     def search_ext_ref(self, request):
@@ -269,3 +273,4 @@ class ProductViewSet(viewsets.ModelViewSet):
 class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    permission_classes = [IsAuthenticated]

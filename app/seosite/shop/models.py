@@ -11,7 +11,6 @@ class WebComponentModel(models.Model):
     meta_description = models.TextField(blank=True, null=True, max_length=5000)
     keywords = models.CharField(max_length=254, null=True, blank=True)
     text = HTMLField(blank=True, null=True, max_length=20000)
-    faq = models.JSONField(blank=True, null=True, max_length=20000)
     featured = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     last_modified = models.DateTimeField(auto_now=True, blank=False, null=False)
@@ -37,7 +36,11 @@ class Category(WebComponentModel):
     image = models.ImageField(null=True, blank=True, width_field="image_width", height_field="image_height")
 
     def image_tag(self):
-        return mark_safe(f'<img src="{self.image}" width="100" height="100" />') if self.image else None
+        return (
+            mark_safe(f'<img src="http://localhost/media/{self.image}" width="100" height="100" />')
+            if self.image
+            else None
+        )
 
     image_tag.short_description = "Image"
 
@@ -79,7 +82,7 @@ class Product(WebComponentModel):
     def image_tag(self):
         return (
             mark_safe(
-                f'<a href=/admin/shop/productimage/{self.images.first().pk}><img src="{self.images.first().large}" width="80" height="80" /></a>'
+                f'<a href=/admin/shop/productimage/{self.images.first().pk}><img src="{self.images.first().small}" width="80" height="80" /></a>'
             )
             if self.images.first()
             else None
@@ -166,15 +169,10 @@ class ProductImage(models.Model):
     small = models.URLField(max_length=254, null=True, blank=True)
     position = models.PositiveSmallIntegerField(null=False, default=0)
 
-    def large_tag(self):
-        return mark_safe(f'<img src="{self.large}" width="80" height="80" />') if self.large else None
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.small}" width="80" height="80" />') if self.small else None
 
-    large_tag.short_description = "Large Image"
-
-    def thumb_tag(self):
-        return mark_safe(f'<img src="{self.thumb}" width="80" height="80" />') if self.thumb else None
-
-    thumb_tag.short_description = "Thumb"
+    image_tag.short_description = "Image"
 
     def __str__(self):
         return f"{self.image}"
