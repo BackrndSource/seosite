@@ -17,10 +17,13 @@ sitemaps = {
 }
 
 urlpatterns = [
-    # path('categories/<slug:slug>/', CategoryDetailView.as_view(), name='unique_slug'),
+    # Category
     path("categorias/", CategoryListView.as_view(), name="category-list"),
     path("categoria/<int:pk>/", CategoryDetailView.as_view(), name="category-detail"),
+    path('categoria/<slug:slug>/', CategoryDetailView.as_view(), name='category-slug'),
+    # Product
     path("producto/<int:pk>/", ProductDetailView.as_view(), name="product-detail"),
+    path('producto/<slug:slug>/', ProductDetailView.as_view(), name='product-slug'),
     # Sitemap.xml
     path("sitemap-tienda-<section>.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap")
 ]
