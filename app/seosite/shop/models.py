@@ -10,7 +10,7 @@ class WebComponentModel(models.Model):
     slug = models.CharField(unique=True, blank=True, null=False, max_length=254)
     description = models.TextField(blank=True, null=True, max_length=5000)
     meta_description = models.TextField(blank=True, null=True, max_length=5000)
-    keywords = models.CharField(max_length=254, null=True, blank=True)
+    keywords = models.CharField(max_length=5000, null=True, blank=True)
     text = HTMLField(blank=True, null=True, max_length=20000)
     visible = models.BooleanField(blank=False, null=False, default=True)
     featured = models.BooleanField(default=False)
@@ -68,11 +68,11 @@ class Category(WebComponentModel):
 
     # Sitemap.xml
     def get_absolute_url(self):
-        return reverse('category-detail', args=[self.pk])
+        return reverse("category-detail", args=[self.pk])
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        try: 
+        try:
             # Sitemap.xml - Ping Google on Updates
             ping_google()
         except Exception:
@@ -164,7 +164,7 @@ class Product(WebComponentModel):
             self.slug = self.slug if self.slug else slugify(self.title)
 
         super(Product, self).save(*args, **kwargs)
-        try: 
+        try:
             # Sitemap.xml - Ping Google on Updates
             ping_google()
         except Exception:
@@ -176,7 +176,7 @@ class Product(WebComponentModel):
 
     # Sitemap.xml
     def get_absolute_url(self):
-        return reverse('product-detail', args=[self.pk])
+        return reverse("product-detail", args=[self.pk])
 
 
 class ProductImage(models.Model):
@@ -195,7 +195,7 @@ class ProductImage(models.Model):
 
     # Sitemap.xml
     def get_absolute_url(self):
-        return reverse('productimage-detail', args=[self.pk])
+        return reverse("productimage-detail", args=[self.pk])
 
     def __str__(self):
         return f"{self.product.title[:50]}"
@@ -218,10 +218,11 @@ class Review(models.Model):
 
     # Sitemap.xml
     def get_absolute_url(self):
-        return reverse('review-detail', args=[self.pk])
+        return reverse("review-detail", args=[self.pk])
 
     def __str__(self):
         return f"{self.title[:50]}"
+
 
 class Config(models.Model):
     name = models.CharField(unique=True, blank=False, null=False, max_length=100)
