@@ -1,9 +1,17 @@
 {% extends "giftos/layouts/base.html" %}
-{% load static %}
 {% load shop_extras %}
+
 {% block title %}{{category.title}}{% endblock %}
-{% block meta_description %}{{category.description}}{% endblock %}
-{% block meta_keywords %}{{category.keywoords}}{% endblock %}
+{% block meta_description %}{{category.meta_description}}{% endblock %}
+{% block meta_keywords %}{{category.keywords}}{% endblock %}
+
+{% block og_title %}{{category.title}}{% endblock %}
+{% block og_description %}{{category.meta_description}}{% endblock %}
+{% block meta_extra %}
+<meta property="og:image" content="{{category.image}}" />
+<meta property="og:image:width" content="{{category.image_width}}" />
+<meta property="og:image:height" content="{{category.image_height}}" />
+{% endblock %}
 
 <!-- FEATURED PRODUCTS -->
 {% block hero %}{% include "giftos/product/components/hero.html" with products=featured_products %}{% endblock %}
@@ -33,7 +41,7 @@
 
 <!-- SUB CATEGORIES LIST -->
 {% if category.childs.all.count > 0 %}
-{% include "giftos/category/components/list.html" with categories=category.childs.all %}
+{% include "giftos/category/components/list.html" with categories=category|childs %}
 {% endif %}
 
 <!-- PROMO PRODUCTS -->
@@ -52,12 +60,10 @@
     </div>
 </section>
 
-
 <!-- BEST SELLING PRODUCTS -->
 {% if bestselling_products.count > 0 %}
 {% include "giftos/product/components/list.html" with products=bestselling_products.all|slice:":4" title="Los más vendidos"%}
 {% endif %}
-
 
 <!-- REVIEWS LIST -->
 {% if reviews.count > 0 %}
@@ -69,11 +75,9 @@
 {% include "giftos/product/components/list.html" with products=bestrated_products.all|slice:":4" title="Mejor valorados"%}
 {% endif %}
 
-
 <!-- ALL PRODUCTS -->
 {% if category|products is not None %}
 {% include "giftos/product/components/list.html" with products=category|products title="Todos los productos"%}
 {% endif %}
-
 
 {% endblock %}
