@@ -1,26 +1,21 @@
 {% load humanize %}
 {% load shop_extras %}
-<div class="carousel-item w-64 pb-5 bg-white" >
+<div class="carousel-item w-64 pb-5 bg-white">
     <a href="{% url 'product-detail' obj.pk %}">
-        <div 
-        class="h-48 flex items-start bg-center bg-contain bg-no-repeat"
-        style="background-image: url('{{ obj.images.first.large }}');"
-        >
+        <div class="relative p-2">
+            <img alt="Product image for {{obj.title}}" class="lazy h-48" data-src="{{ obj.images.first.large }}"
+                src="{{ obj.images.first.thumb }}" />
             {% if obj.real_price %}
-            <span class="rounded-sm bg-green-500 px-2 text-lg font-normal text-white">
-                -{{obj.real_price|sub:obj.price|floatformat:2}}€ 
+            <span class="absolute top-0 right-0 rounded-sm bg-green-500 px-2 text-lg font-normal text-white">
+                -{{obj.real_price|sub:obj.price|floatformat:2}}€
             </span>
             {% endif %}
         </div>
         <div class="group flex justify-between items-center px-3 pt-2">
             <div class="flex items-center text-sm">
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="rgb(250 204 21)"
-                >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="rgb(250 204 21)">
+                    <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
                 <span>{{obj.rating|floatformat:1}} ({{obj.rating_count}})</span>
             </div>
@@ -28,14 +23,19 @@
                 <div class="inline-flex">
                     <p class="">
                         {% if obj.real_price %}
-                        <span class="tracking-wider text-gray-700 text-xs line-through font-normal">{{obj.real_price|floatformat:2}}€</span>
+                        <span
+                            class="tracking-wider text-gray-700 text-xs line-through font-normal">{{obj.real_price|floatformat:2}}€</span>
                         {% elif obj.price %}
-                        <span class="tracking-wider text-gray-700 text-xl pr-0 flex justify-top">{{obj.price|price_int}}<span class="tracking-wider text-gray-900 text-xs pl-0 pt-1">{{obj.price|price_decimals}}€</span></span>
+                        <span
+                            class="tracking-wider text-gray-700 text-xl pr-0 flex justify-top">{{obj.price|price_int}}<span
+                                class="tracking-wider text-gray-900 text-xs pl-0 pt-1">{{obj.price|price_decimals}}€</span></span>
                         {% endif %}
                     </p>
                     {% if obj.real_price %}
                     <p class="">
-                        <span class="tracking-wider text-gray-900 text-xl text-red-600 flex justify-top">{{obj.price|price_int}}<span class="tracking-wider text-gray-900 text-xs text-red-600 pt-1">{{obj.price|price_decimals}}€</span></span>
+                        <span
+                            class="tracking-wider text-gray-900 text-xl text-red-600 flex justify-top">{{obj.price|price_int}}<span
+                                class="tracking-wider text-gray-900 text-xs text-red-600 pt-1">{{obj.price|price_decimals}}€</span></span>
                     </p>
                     {% endif %}
                 </div>
@@ -47,16 +47,23 @@
             </div>
         </div>
         <div class="w-full flex justify-center pt-1">
-            <a
-                class="px-4 py-1 flex gap-2 rounded-full bg-amber-500 text-white hover:bg-amber-400 focus:outline-none focus:ring"
-                href="{{obj.url_affiliate}}"
-                target="_blank"
-                >
+            <a class="px-4 py-1 flex gap-2 rounded-full bg-amber-500 text-white hover:bg-amber-400 focus:outline-none focus:ring"
+                href="{{obj.url_affiliate}}" target="_blank">
                 <span class="tracking-tighter text-sm font-medium">Comprar ahora</span>
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.2998 5H22L20 12H8.37675M21 16H9L7 3H4M4 8H2M5 11H2M6 14H2M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20ZM21 20C21 20.5523 20.5523 21 20 21C19.4477 21 19 20.5523 19 20C19 19.4477 19.4477 19 20 19C20.5523 19 21 19.4477 21 20Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    stroke="#000000">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M7.2998 5H22L20 12H8.37675M21 16H9L7 3H4M4 8H2M5 11H2M6 14H2M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20ZM21 20C21 20.5523 20.5523 21 20 21C19.4477 21 19 20.5523 19 20C19 19.4477 19.4477 19 20 19C20.5523 19 21 19.4477 21 20Z"
+                            stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
             </a>
         </div>
-        <div class="h-32 pt-2 px-3 tracking-tighter w-full font-normal text-md text-cyan-800 hover:text-orange-700 hover:underline overflow-hidden" title="{{obj.title}}">
+        <div class="h-32 pt-2 px-3 tracking-tighter w-full font-normal text-md text-cyan-800 hover:text-orange-700 hover:underline overflow-hidden"
+            title="{{obj.title}}">
             <a href="{% url 'product-detail' obj.pk %}">{{obj.title}}</a>
         </div>
     </a>
