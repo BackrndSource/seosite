@@ -11,7 +11,7 @@
 
 {% block meta_extra %}
 <!-- Canonical -->
-<link rel="canonical" href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{request.get_host}}{% url 'categories' %}">
+<link rel="canonical" href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{request.get_host}}{% url 'category-list' %}">
 {% endblock %}
 
 {% block content %}
