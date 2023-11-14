@@ -27,7 +27,6 @@ def price_int(value):
 def childs(category):
     return category.childs.filter(visible=True)
 
-
 @register.filter
 def products(category):
     return category.products.filter(visible=True)
