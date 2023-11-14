@@ -25,9 +25,15 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ["localhost", "localhost:4200"]
+ALLOWED_HOSTS = ["localhost"]
 
 # ALLOWED_HOSTS = ["vps-55fb0d72.vps.ovh.net"] # VPS
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    # "http://vps-55fb0d72.vps.ovh.net:4200",
+    # "http://app:4200",
+]
 
 # Application definition
 
@@ -61,13 +67,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://app:4200",
-# ]
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-]
 
 ROOT_URLCONF = "seosite.urls"
 
@@ -106,11 +105,11 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "HOST": "db",
+        "HOST": "seosite-db",
         "PORT": 3306,
         "NAME": "seosite",
-        "USER": "root",
-        "PASSWORD": "hgztg543wer65zrt",
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
         "TEST": {
             "NAME": "seosite_test",
         },

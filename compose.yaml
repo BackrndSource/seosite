@@ -3,7 +3,7 @@ version: '3'
 services:
 
     # Django app
-    app: 
+    seosite-app: 
         build:
             context: app
             target: builder
@@ -11,7 +11,7 @@ services:
         container_name: seosite-app
         restart: always
         depends_on:
-            db:
+            seosite-db:
                 condition: service_healthy
         networks:
             - seosite_backend
@@ -23,7 +23,7 @@ services:
             - ./app/.env
 
     # Database 
-    db:
+    seosite-db:
         image: mysql:8.2.0
         container_name: seosite-db
         restart: always
@@ -39,7 +39,7 @@ services:
             interval: 5s
             retries: 10
 
-    nginx:
+    seosite-nginx:
         container_name: seosite-nginx
         image: nginx:1.25.3-alpine-slim
         networks:
@@ -50,7 +50,7 @@ services:
         ports:
             - "80:80"
         depends_on:
-            - app
+            - seosite-app
     # adminer:
     #     image: adminer
     #     container_name: seosite_adminer

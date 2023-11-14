@@ -11,6 +11,7 @@ class WebComponentModel(models.Model):
     meta_description = models.TextField(blank=True, null=True, max_length=5000)
     keywords = models.CharField(max_length=254, null=True, blank=True)
     text = HTMLField(blank=True, null=True, max_length=20000)
+    visible = models.BooleanField(blank=False, null=False, default=True)
     featured = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     last_modified = models.DateTimeField(auto_now=True, blank=False, null=False)
@@ -69,7 +70,6 @@ class Category(WebComponentModel):
 
 
 class Product(WebComponentModel):
-    visible = models.BooleanField(blank=False, null=False, default=True)
     categories = models.ManyToManyField(Category, related_name="products", symmetrical=False, blank=True)
     asin = models.CharField(max_length=20, unique=True, null=True)
     url = models.URLField(max_length=254, null=True, blank=True)
@@ -148,7 +148,7 @@ class Product(WebComponentModel):
                 for parent in parents:
                     self.categories.add(parent)
             # Add slug based in title
-            self.slug = slugify(self.title)
+            self.slug = self.slug if self.slug else slugify(self.title)
 
         super(Product, self).save(*args, **kwargs)
 
