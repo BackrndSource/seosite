@@ -15,7 +15,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 # from rest_framework.parsers import MultiPartParser, FormParser
-
+from django.http import HttpResponse
+from django.views.decorators.http import require_GET
 
 # Website Views
 class HomeView(ListView):
@@ -215,30 +216,28 @@ class ProductViewSet(viewsets.ModelViewSet):
                         del product["reviews"]
 
                     replace_product = request.data["replace_product"] if ("replace_product" in request.data) else False
-                    # Replace product
 
-                    # Create product
                     try:
                         if replace_product:
+                            # Replace product
                             _product, created = Product.objects.update_or_create(asin=product["asin"], defaults=product)
                             products_created.append(
                                 ProductSerializer(_product).data
                             ) if created else products_updated.append(ProductSerializer(_product).data)
                         else:
+                            # Create product
                             _product = Product.objects.create(**product)
                             products_created.append(ProductSerializer(_product).data)
-
                         if categories:
                             add_categories(categories, _product)
                         if images:
                             update_or_create_images(images, _product)
                         if reviews:
                             update_or_create_reviews(reviews, _product)
-                    # Update product
                     except Exception as e:
                         update_product = request.data["update_product"] if ("update_product" in request.data) else False
-
                         if update_product:
+                            # Update product
                             update_price = request.data["update_price"] if ("update_price" in request.data) else False
                             update_rating = (
                                 request.data["update_rating"] if ("update_rating" in request.data) else False
@@ -319,3 +318,16 @@ class ProductImageViewSet(viewsets.ModelViewSet):
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
+
+
+@require_GET
+def robots_txt(request):
+    robots_txt_content = f"""
+    User-agent: *
+    Disallow:
+
+    Sitemap: {request.build_absolute_uri('/sitemap.xml')}
+    """
+    return HttpResponse(robots_txt_content, content_type="text/plain")
+
+

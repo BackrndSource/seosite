@@ -2,6 +2,7 @@ from django.db import models
 from tinymce.models import HTMLField
 from django.utils.html import mark_safe
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class WebComponentModel(models.Model):
@@ -64,6 +65,18 @@ class Category(WebComponentModel):
 
         _get_parents(self)
         return parent_categories
+
+    # Sitemap.xml
+    def get_absolute_url(self):
+        return reverse('category-detail', args=[self.pk])
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        try: 
+            # Sitemap.xml - Ping Google on Updates
+            ping_google()
+        except Exception:
+            pass
 
     class Meta:
         verbose_name_plural = "categories"
@@ -151,13 +164,19 @@ class Product(WebComponentModel):
             self.slug = self.slug if self.slug else slugify(self.title)
 
         super(Product, self).save(*args, **kwargs)
+        try: 
+            # Sitemap.xml - Ping Google on Updates
+            ping_google()
+        except Exception:
+            pass
 
     def create(self, data):
         product, created = Product.objects.update_or_create(asin=data.get("asin", None), defaults={data})
         return product
 
-    def __str__(self):
-        return f"{self.title[:50]}"
+    # Sitemap.xml
+    def get_absolute_url(self):
+        return reverse('product-detail', args=[self.pk])
 
 
 class ProductImage(models.Model):
@@ -174,8 +193,12 @@ class ProductImage(models.Model):
 
     image_tag.short_description = "Image"
 
+    # Sitemap.xml
+    def get_absolute_url(self):
+        return reverse('productimage-detail', args=[self.pk])
+
     def __str__(self):
-        return f"{self.image}"
+        return f"{self.product.title[:50]}"
 
 
 class Review(models.Model):
@@ -185,12 +208,20 @@ class Review(models.Model):
     author = models.CharField(max_length=64)
     author_img = models.URLField(max_length=254, null=True, blank=True)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
+    created_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
+    last_modified = models.DateTimeField(auto_now=True, blank=False, null=False)
 
     def author_img_tag(self):
         return mark_safe(f'<img src="{self.author_img}" width="50" height="50" />') if self.author_img else None
 
     author_img_tag.short_description = "Author Image"
 
+    # Sitemap.xml
+    def get_absolute_url(self):
+        return reverse('review-detail', args=[self.pk])
+
+    def __str__(self):
+        return f"{self.title[:50]}"
 
 class Config(models.Model):
     name = models.CharField(unique=True, blank=False, null=False, max_length=100)
