@@ -1,0 +1,14 @@
+{% extends "giftos/layouts/base.html" %}
+
+{% load shop_extras %}
+
+{% block title %}Todas las categorías{% endblock %}
+{% block meta_description %}Meta description{% endblock %}
+{% block meta_keywords %}keywords {% endblock %}
+
+{% block content %}
+
+{% include "giftos/category/components/nav.html" with categories=shop_categories %}
+{% include "giftos/category/components/list.html" with categories=shop_categories %}
+
+{% endblock %}

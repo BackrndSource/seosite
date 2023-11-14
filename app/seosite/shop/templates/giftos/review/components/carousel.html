@@ -1,0 +1,30 @@
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 d-flex flex-wrap justify-content-center gap-2 pb-4">
+                <h2 class="text-uppercase font-weight-bold text-center">¿Qué opinan los compradores de {{title}}?</h2>
+                {% if description %}
+                <p class="pt-3 text-center">{{description}}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container px-0">
+        <div id="reviewsCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for review in reviews %}
+                {% include "giftos/review/components/item.html" %}
+                {% endfor %}
+                <a style="width: 3.5rem; height: 10rem;" class="carousel-control-prev bg-primary ml-2 mt-5" href="#reviewsCarousel" role="button"
+                    data-slide="prev">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a style="width: 3.5rem; height: 10rem;" class="carousel-control-next bg-primary mr-2 mt-5" href="#reviewsCarousel" role="button"
+                    data-slide="next">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <span class="sr-only">Siguiente</span>
+                </a>
+            </div>
+        </div>
+</section>

@@ -1,0 +1,26 @@
+<div class="carousel-item {% if forloop.first %} active {% endif %} rounded-lg px-3" style="background-color: #9fb9ff; color: white;">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-md-7">
+                <a href="{% url 'product-detail' product.pk %}">
+                    <h3 style="font-size: 2rem;  color: white;" class="font-weight-bold">
+                        {{product.title}}
+                    </h3>
+                </a>
+                <p style="font-size: 1.1rem; height: 150px;" class="overflow-auto">
+                    {{product.description}}
+                </p>
+                <a style="color: white;" target="_blank" href="{{product.url_affiliate}}" class="btn btn-warning pt-2 px-3 mt-2">
+                    Comprar en amazon
+                </a>
+            </div>
+            <div class="col-md-4 offset-1">
+                <a target="_blank" href="{{product.url_affiliate}}">
+                    <div class="shadow bg-white p-3 rounded">
+                        <img data-src="{{product.images.first.large}}" height="256px" src="{{product.images.first.thumb}}" class="lazy" alt="" />
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,9 +5,8 @@
         </h2>
         <div class="flex justify-center items-center flex-wrap gap-4 pt-8">
             {% for review in product.reviews.all %}
-                {% include "includes/components/review-blockquote.html" %}
+            {% include "shop/review/components/item.html" %}
             {% endfor %}
         </div>
     </div>
 </section>
-  

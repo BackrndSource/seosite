@@ -1,0 +1,32 @@
+<div class="carousel-item {% if forloop.first %} active {% endif %}">
+    <div class="container-fluid px-5">
+        <div class="border row mx-3 px-3 py-4 bg-white">
+            <div class="col-12 d-flex justify-content-start">
+                <i class="fa fa-quote-left mr-3" aria-hidden="true"></i>
+                <h5>
+                    {{review.title}}
+                </h5>
+            </div>
+            <div class="col-12 pt-3">
+                <p class="overflow-auto" style="height: 7rem;">
+                    {{review.text}}
+                </p>
+            </div>
+            <div class="col-12 d-flex justify-content-end">
+
+
+                <h6>
+                    <img alt="Author profile image for {{review.author}}" width="45rem" height="45rem" class="rounded-circle object-cover"
+                        src="{{review.author_img}}" />
+                    {{review.author}}
+                </h6>
+            </div>
+            {% if user.is_staff %}
+            <div class="col-12 d-flex justify-content-start">
+                <a target="_blank" href="/admin/shop/review/{{review.id}}/change" class="btn btn-primary mr-2"><i class="fa fa-edit"></i> Editar</a>
+                <a target="_blank" href="/admin/shop/review/{{review.id}}/delete" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

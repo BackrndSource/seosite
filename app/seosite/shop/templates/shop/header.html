@@ -1,0 +1,45 @@
+{% load static %}
+<header>
+    {% block header %}
+    {% block nav %}
+    <nav class="text-sm w-full top-0 py-1 bg-gradient-to-r from-yellow-100 via-green-100 to-pink-100">
+        <div class="px-4 md:px-24 w-full flex items-center justify-start mt-0 pr-6 py-0 gap-6">
+            <div class="flex">
+                <a href="{% url 'category-list' %}">
+                    <img src="{% static 'shop/logo.png' %}" class="h-10" alt="Logo deninos.com" />
+                </a>
+            </div>
+
+            <div
+                class="shadow-inner col-span-3 bg-white pr-4 py-0 flex rounded-md border border-gray-300 justify-center items-center">
+                <button type="submit" class="">
+                    <svg class="fill-current pointer-events-none text-grey-darkest w-4 h-4 inline pb-1 ml-2"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path
+                            d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z">
+                        </path>
+                    </svg>
+                </button>
+                <input id="q" type="search" placeholder="Buscar en deninos.com" autofocus="autofocus"
+                    class="lg:w-96 text-grey-800 transition focus:outline-none focus:border-transparent p-2 appearance-none leading-normal text-xs md:text-sm">
+            </div>
+
+            <div>
+                <nav>
+                    <ul class="flex gap-4 items-center justify-end text-gray-700">
+                        <li><a class="inline-block no-underline hover:text-black hover:underline"
+                                href="{% url 'category-list' %}">Shop</a></li>
+                        <li><a class="inline-block no-underline hover:text-black hover:underline" href="#">Blog</a></li>
+                        <li><a class="inline-block no-underline hover:text-black hover:underline" href="#">About</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+
+        </div>
+    </nav>
+    {% endblock %}
+    {% endblock %}
+
+</header>

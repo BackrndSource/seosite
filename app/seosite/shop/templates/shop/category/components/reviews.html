@@ -7,10 +7,9 @@
         </h2>
         {% for review in reviews %}
         <div class="mt-8 grid grid-cols-3 gap-4">
-            {% include "includes/components/review-blockquote.html" %}
-            {% include "includes/components/product-item-lg.html" with obj=review.product %}
+            {% include "shop/review/components/item.html" %}
+            {% include "shop/product/components/item-lg.html" with obj=review.product %}
         </div>
         {% endfor %}
     </div>
 </section>
-  

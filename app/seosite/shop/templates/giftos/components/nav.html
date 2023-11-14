@@ -1,0 +1,35 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite" aria-controls="navbarSite" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div style="font-size: 1.25rem;" class="collapse navbar-collapse justify-content-center" id="navbarSite">
+        <!--  innerpage_navbar -->
+        <a class="mx-5 navbar-brand" href="{% url 'category-list' %}">
+            <img src="{% static 'shop/logo.png' %}" height="128px" alt="Logo deninos.com" />
+        </a>
+        <ul class="navbar-nav pt-5">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'category-list' %}">
+                    Tienda
+                </a>
+            </li>
+            <li class="nav-item mx-5">
+                <a class="nav-link" href="">
+                    Blog
+                </a>
+            </li>
+        </ul>
+        <!-- <div class="user_option">
+            <form class="form-inline">
+                <input type="text" class="form-input mr-2">
+                <button class="btn nav_search-btn" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div> -->
+    </div>
+</nav>
