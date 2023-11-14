@@ -3,7 +3,7 @@
 <section class="{% cycle 'bg-gray-50' 'bg-white' %} px-4 md:px-24">
     <div class="w-full z-30 top-0 py-1">
         <div class="w-full container flex flex-wrap items-center justify-between pt-3">
-            <a class="uppercase no-underline hover:no-underline" href="{% url 'category-detail' obj.pk %}">
+            <a class="uppercase no-underline hover:no-underline" href="{% url 'category-slug' obj.slug %}">
                 <h2 class="uppercase tracking-wide font-bold text-gray-800 text-2xl">{{obj.title}}</h2>
             </a>
             {% if num_products > 0 %}

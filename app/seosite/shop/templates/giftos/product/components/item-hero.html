@@ -2,7 +2,7 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-md-7">
-                <a href="{% url 'product-detail' product.pk %}">
+                <a href="{% url 'product-slug' product.slug %}">
                     <h3 style="font-size: 2rem;  color: white;" class="font-weight-bold">
                         {{product.title}}
                     </h3>

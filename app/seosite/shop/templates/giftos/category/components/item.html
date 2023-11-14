@@ -5,11 +5,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12 pb-4 text-center">
-                <a class="" style="font-size: 1.25rem; color: black;" href="{% url 'category-detail' category.pk %}">
+                <a class="" style="font-size: 1.25rem; color: black;" href="{% url 'category-slug' category.slug %}">
                     <h2 class="text-uppercase font-weight-bold">{{category.title}}</h2>
                 </a>
                 <p class="pt-3">{{category.description}}</p>
-                <a class="" style="font-size: 1.25rem;" href="{% url 'category-detail' category.pk %}">Ver más...</a>
+                <a class="" style="font-size: 1.25rem;" href="{% url 'category-slug' category.slug %}">Ver más...</a>
             </div>
 
         </div>

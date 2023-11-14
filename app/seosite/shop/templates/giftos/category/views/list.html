@@ -9,6 +9,11 @@
 {% block og_title %}Las categorías en deninos.com{% endblock %}
 {% block og_description %}Todas las categorías de productos en venta.{% endblock %}
 
+{% block meta_extra %}
+<!-- Canonical -->
+<link rel="canonical" href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{request.get_host}}{% url 'categories' %}">
+{% endblock %}
+
 {% block content %}
 
 {% include "giftos/category/components/nav.html" with categories=shop_categories %}

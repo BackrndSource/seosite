@@ -39,7 +39,7 @@
                     </svg>
                 </li>
                 <li class="">
-                    <a href="{% url 'category-detail' obj.parent.pk %}" class="block transition hover:text-gray-700">{{obj.parent.title}}</a>
+                    <a href="{% url 'category-slug' obj.parent.slug %}" class="block transition hover:text-gray-700">{{obj.parent.title}}</a>
                 </li>
                 {% endif %}
                 <li class="rtl:rotate-180">
@@ -57,7 +57,7 @@
                     </svg>
                 </li>
                 <li>
-                    <a href="{% url 'category-detail' obj.pk %}" class="block transition hover:text-gray-700">{{obj.title}}</a>
+                    <a href="{% url 'category-slug' obj.slug %}" class="block transition hover:text-gray-700">{{obj.title}}</a>
                 </li>
                 {% endif %}
                 <li class="px-3">

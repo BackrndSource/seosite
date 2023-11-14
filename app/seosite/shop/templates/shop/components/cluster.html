@@ -5,7 +5,7 @@
         <div class="xl:col-span-2 2xl:col-span-1 h-64 grid gap-0 grid-cols-1 md:grid-cols-5 lg:grid-cols-5 rounded-lg overflow-hidden shadow-lg">
             {% for category in objs %}
             {% if not category.parent or category.parent == parent %}
-            <a href="{% url 'category-detail' category.pk %}">
+            <a href="{% url 'category-slug' category.slug %}">
                 <div 
                     class="h-full hover:supergrow bg-cover bg-center"
                     style="background-image: url('{{category.image}}');"
