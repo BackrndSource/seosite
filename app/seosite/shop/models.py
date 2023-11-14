@@ -8,7 +8,7 @@ class WebComponentModel(models.Model):
     title = models.CharField(unique=True, blank=True, null=False, max_length=254)
     slug = models.CharField(unique=True, blank=True, null=False, max_length=254)
     description = models.TextField(blank=True, null=True, max_length=5000)
-    meta_description = models.TextField(blank=True, null=True, max_length=1000)
+    meta_description = models.TextField(blank=True, null=True, max_length=5000)
     keywords = models.CharField(max_length=254, null=True, blank=True)
     text = HTMLField(blank=True, null=True, max_length=20000)
     faq = models.JSONField(blank=True, null=True, max_length=20000)
@@ -68,7 +68,7 @@ class Category(WebComponentModel):
 class Product(WebComponentModel):
     visible = models.BooleanField(blank=False, null=False, default=True)
     categories = models.ManyToManyField(Category, related_name="products", symmetrical=False, blank=True)
-    asin = models.CharField(max_length=20, unique=True, null=False)
+    asin = models.CharField(max_length=20, unique=True, null=True)
     url = models.URLField(max_length=254, null=True, blank=True)
     url_affiliate = models.URLField(max_length=254, null=True, blank=True)
     price = models.FloatField(null=True, blank=True)
