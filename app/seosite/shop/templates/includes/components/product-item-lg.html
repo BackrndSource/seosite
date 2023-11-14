@@ -1,0 +1,51 @@
+{% load humanize %}
+{% load shop_extras %}
+<div class="bg-white col-span-2 shadow-md rounded-lg grid grid-cols-3 py-6 px-6 gap-6">
+    <div class="{% cycle 'text-right' 'order-last text-left' %} col-span-2  grid grid-cols-1 justify-between">
+        <a href="{% url 'product-detail' obj.pk %}" class="hover:text-gray-900"><h3 class="text-xl">{{obj.title}}</h3></a>
+        <p class="text-sm h-24 overflow-hidden">{{obj.description}}</p>
+        <div class="h-16 pt-0 flex items-end justify-between">
+            <div class="{% cycle '' 'order-last' %}">
+                <a
+                    class="px-5 py-2 inline-flex items-center gap-2 rounded-full bg-yellow-500 text-white hover:bg-yellow-400 focus:outline-none focus:ring"
+                    href="{{obj.url_affiliate}}"
+                    target="_blank"
+                    >
+                    <span class="text-sm font-medium"> Comprar ahora </span>
+                    <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M21,7H7.462L5.91,3.586C5.748,3.229,5.392,3,5,3H2v2h2.356L9.09,15.414C9.252,15.771,9.608,16,10,16h8 c0.4,0,0.762-0.238,0.919-0.606l3-7c0.133-0.309,0.101-0.663-0.084-0.944C21.649,7.169,21.336,7,21,7z M17.341,14h-6.697L8.371,9 h11.112L17.341,14z" />
+                        <circle cx="10.5" cy="18.5" r="1.5" />
+                        <circle cx="17.5" cy="18.5" r="1.5" />
+                    </svg>
+                </a>
+            </div> 
+            {% if obj.real_price %}
+            <span class="inline-flex items-center rounded-md bg-red-500 px-2 py-1 text-xl font-normal text-white">
+                <span class="text-sm font-medium mr-1">Ahorra </span>
+                {{obj.real_price|sub:obj.price|floatformat:2}}€ 
+            </span>
+            {% endif %}
+            <div class="{% cycle '' 'order-first' %} flex items-end justify-end">
+                <p class="">
+                    {% if obj.real_price %}
+                    <span class="tracking-wider text-gray-700 text-sm line-through">{{obj.real_price|floatformat:2}}€</span>
+                    {% elif obj.price %}
+                    <span class="tracking-wider text-gray-700 text-3xl pr-0 flex justify-top">{{obj.price|price_int}}<span class="tracking-wider text-gray-900 text-xs pl-0 pt-1">{{obj.price|price_decimals}}€</span></span>
+                    {% endif %}
+                </p>
+                {% if obj.real_price %}
+                <p class="">
+                    <span class="tracking-wider text-3xl text-red-600 font-bold flex justify-top">{{obj.price|price_int}}<span class="tracking-wider text-xs text-red-600 pt-1">{{obj.price|price_decimals}}€</span></span>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'product-detail' obj.pk %}" class="hover:grow">
+        <img
+        alt="Image for {{obj.title}}"
+        src="{{obj.images.first.large}}"
+        class="flex object-cover"
+        />
+    </a>
+</div>
