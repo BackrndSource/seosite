@@ -107,9 +107,7 @@
                 "description": "{{product.description}}",
                 "name": "{{product.title}}",
                 "image":  [
-                    {% for image in product.images.all %}
-                    "{{image.large}}",
-                    {% endfor %}
+                    "{{product.images.first.large}}"
                 ],
                 "offers": {
                     "@type": "Offer",
@@ -117,23 +115,6 @@
                     "price": "{{product.price}}",
                     "priceCurrency": "EUR"
                 },
-                "review": [
-                    {% for review in product.reviews.all %}
-                    {
-                        "@type": "Review",
-                        "author": "{{review.author}}",
-                        "datePublished": "{{review.created_date}}",
-                        "reviewBody": "{{review.text}}",
-                        "name": "{{review.title}}",
-                        "reviewRating": {
-                            "@type": "Rating",
-                            "bestRating": "5",
-                            "ratingValue": "{{review.rating}}",
-                            "worstRating": "1"
-                        }
-                    },
-                    {% endfor %}
-                ]
             },
             {% endfor %}
         ]
