@@ -29,6 +29,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- LazyLoad -->
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.5/dist/lazyload.min.js"></script>
+    <!-- Google tag (gtag.js) -->
 </head>
 
 <body class="" style="
@@ -58,6 +59,13 @@ font-family:'poppins',sans-serif;">
     <!-- LazyLoad Init -->
     <script>
         var lazyLoadInstance = new LazyLoad({});
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8N21VLDJ7E"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8N21VLDJ7E');
     </script>
     {% block script_extra %}{% endblock %}
 </body>
