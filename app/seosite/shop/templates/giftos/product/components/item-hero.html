@@ -1,26 +1,38 @@
-<div class="carousel-item {% if forloop.first %} active {% endif %} rounded-lg px-3" style="background-color: #9fb9ff; color: white;">
-    <div class="container-fluid py-4">
-        <div class="row">
-            <div class="col-md-7">
+<div class="carousel-item {% if forloop.first %} active {% endif %}px-3">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-xl-5 d-flex justify-content-center">
+                <div style="height:40vh" class="p-3 rounded-lg shadow bg-white overflow-hidden">
+                    <a target="_blank" href="{{product.url_affiliate}}">
+                        <img class="lazy d-block" height="100%" width="auto" src="{{product.images.first.thumb}}" data-src="{{product.images.first.large}}"
+                            alt="Imagen del producto">
+                    </a>
+                </div>
+            </div>
+            <div class="col-xl-7 py-2">
                 <a href="{% url 'product-slug' product.slug %}">
-                    <h3 style="font-size: 2rem;  color: white;" class="font-weight-bold">
+                    <h3 style="font-size: 2rem;  color: black;" class="font-weight-bold">
                         {{product.title}}
                     </h3>
                 </a>
-                <p style="font-size: 1.1rem; height: 150px;" class="overflow-auto">
+                <p style="font-size: 1.1rem; height: 150px;" class="overflow-auto pt-3 text-ellipsis">
                     {{product.description}}
                 </p>
                 <a style="color: white;" target="_blank" href="{{product.url_affiliate}}" class="btn btn-warning pt-2 px-3 mt-2">
                     Comprar en amazon
                 </a>
             </div>
-            <div class="col-md-4 offset-1">
-                <a target="_blank" href="{{product.url_affiliate}}">
-                    <div class="shadow bg-white p-3 rounded">
-                        <img data-src="{{product.images.first.large}}" height="256px" src="{{product.images.first.thumb}}" class="lazy" alt="" />
-                    </div>
-                </a>
-            </div>
         </div>
+        
+        {% if user.is_staff %}
+        <div class="row pt-3">
+            <a target="_blank" href="/admin/shop/product/{{product.id}}/change" class="btn btn-primary mx-1">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            </a>
+            <a target="_blank" href="/admin/shop/product/{{product.id}}/delete" class="btn btn-danger">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            </a>
+        </div>
+        {% endif %}
     </div>
 </div>

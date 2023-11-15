@@ -1,23 +1,23 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
+<nav class="navbar navbar-expand-md navbar-light bg-white align-items-end justify-content-center">
+
+    <a class="mx-5 navbar-brand" href="{% url 'category-list' %}">
+        <img src="{% static 'shop/logo.webp' %}" height="128px" alt="Logo deninos.com" />
+    </a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite" aria-controls="navbarSite" aria-expanded="false"
         aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div style="font-size: 1.25rem;" class="collapse navbar-collapse justify-content-center" id="navbarSite">
-        <!--  innerpage_navbar -->
-        <a class="mx-5 navbar-brand" href="{% url 'category-list' %}">
-            <img src="{% static 'shop/logo.png' %}" height="128px" alt="Logo deninos.com" />
-        </a>
-        <ul class="navbar-nav pt-5">
+    <div style="font-size: 1.25rem;" class="collapse navbar-collapse justify-content-start pb-2" id="navbarSite">
+        <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'category-list' %}">
+                <a class="nav-link ml-3" href="{% url 'category-list' %}">
                     Tienda
                 </a>
             </li>
-            <li class="nav-item mx-5">
+            <li class="nav-item ml-3">
                 <a class="nav-link" href="">
                     Blog
                 </a>

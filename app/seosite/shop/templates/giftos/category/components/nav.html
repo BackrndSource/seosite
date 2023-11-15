@@ -1,58 +1,59 @@
 {% load shop_extras %}
-<nav class="navbar navbar-expand-md navbar-light shadow bg-white" style="font-size: 1.2rem;">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCategories" aria-controls="navbarCategories"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarCategories">
-        <ul class="navbar-nav mr-3">
-            {% if active_category %}
-            {% with childs=active_category|childs %}
-            {% if childs.count > 0 %}
-            <li class="nav-item dropdown px-4">
-                <a style="color: black;" class="nav-link dropdown-toggle font-weight-bold" href="{% url 'category-slug' active_category.slug %}"
-                    role="button" data-toggle="dropdown" aria-expanded="false">
-                    {{active_category.title}}
-                </a>
-                <div class="dropdown-menu">
-                    {% for child in childs %}
-                    <a class="dropdown-item" href="{% url 'category-slug' child.slug %}">{{child.title}}</a>
-                    {% endfor %}
-                </div>
-            </li>
-            {% else %}
-            <li class="nav-item px-4">
-                <a style="color: black;" class="nav-link font-weight-bold"
-                    href="{% url 'category-slug' active_category.slug %}">{{active_category.title}}</a>
-            </li>
-            {% endif %}
-            {% endwith %}
-            {% endif %}
-        </ul>
-
-        <ul class="navbar-nav">
-
-            {% for category in categories %}
-            {% with childs=category|childs %}
-            {% if childs.count > 0 %}
-            <li class="nav-item dropdown px-4">
-                <a style="color: black;" class="nav-link dropdown-toggle" href="{% url 'category-slug' category.slug %}" role="button"
-                    data-toggle="dropdown" aria-expanded="false">
-                    {{category.title}}
-                </a>
-                <div class="dropdown-menu">
-                    {% for child in childs %}
-                    <a class="dropdown-item" href="{% url 'category-slug' child.slug %}">{{child.title}}</a>
-                    {% endfor %}
-                </div>
-            </li>
-            {% else %}
-            <li class="nav-item px-4">
-                <a style="color: black;" class="nav-link" href="{% url 'category-slug' category.slug %}">{{category.title}}</a>
-            </li>
-            {% endif %}
-            {% endwith %}
+<ul class="shadow bg-white nav border-top border-bottom border-secondary w-100 justify-content-center" style="font-size: 1.2rem;"  id="navbarCategories">
+    {% for category in categories %}
+    {% with childs=category|childs %}
+    {% if childs.count > 0 %}
+    <li class="nav-item dropdown px-4 d-flex flex-wrap align-items-center">
+        <a style="color: black;" href="{% url 'category-slug' category.slug %}">
+            {{category.title}}
+        </a>
+        <a style="color: black;" role="button" href="#" class="nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </a>
+        <div class="dropdown-menu">
+            {% for child in childs %}
+            <a class="dropdown-item" href="{% url 'category-slug' child.slug %}">{{child.title}}</a>
             {% endfor %}
-        </ul>
-    </div>
-</nav>
+        </div>
+    </li>
+    {% else %}
+    <li class="nav-item px-4">
+        <a style="color: black;" class="nav-link" href="{% url 'category-slug' category.slug %}">{{category.title}}</a>
+    </li>
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</ul>
+
+{% if active_category %}
+{% with subcategories=active_category|childs %}
+{% if subcategories.count > 0 %}
+<ul class="nav w-100 justify-content-center mt-3 upper text-uppercase"  style="font-size: 1.2rem;"  id="navbarSubCategories">
+    {% for subcategory in subcategories %}
+    {% with childs=subcategory|childs %}
+    {% if childs.count > 0 %}
+    <li class="nav-item dropdown px-4 d-flex flex-wrap justify-content-center align-items-center">
+        <a style="color: black;" href="{% url 'category-slug' subcategory.slug %}">
+            {{subcategory.title}}
+        </a>
+        <a style="color: black;" role="button" href="#" class="nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </a>
+        <div class="dropdown-menu">
+            {% for child in childs %}
+            <a class="dropdown-item" href="{% url 'category-slug' child.slug %}">{{child.title}}</a>
+            {% endfor %}
+        </div>
+    </li>
+    {% else %}
+    <li class="nav-item px-4">
+        <a style="color: black;" class="nav-link"
+            href="{% url 'category-slug' subcategory.slug %}">{{subcategory.title}}</a>
+    </li>
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+{% endif %}

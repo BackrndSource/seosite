@@ -25,18 +25,26 @@
 {% include "giftos/category/components/nav.html" with categories=shop_categories active_category=category %}
 
 <!-- CATEGORY DETAILS - DESCRIPTION -->
-<section class="my-5">
+<section class="my-4">
     <div class="container">
         <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-uppercase" style="font-size: 2.7rem;">
+                    {{category.title}}
+                </h1>
+            </div>
+        </div>
+        <div class="row pt-3">
             <div class="col-12" style="font-size: 1.25rem;">
-                {{category.description}}
+                <p class="text-center">
+                    {{category.description}}
+                </p>
             </div>
         </div>
         {% if user.is_staff %}
         <div class="row py-3">
             <div class="col-12 d-flex justify-content-center align-items-center ">
-                <a target="_blank" href="/admin/shop/category/{{category.id}}/change" class="btn btn-primary mr-2"><i class="fa fa-edit"></i>
-                    Editar categoría {{category.title}}</a>
+                <a target="_blank" href="/admin/shop/category/{{category.id}}/change" class="btn btn-primary mr-2">Editar categoría {{category.title}}</a>
             </div>
         </div>
         {% endif %}
@@ -88,10 +96,10 @@
 
 
 {% block script_extra %} 
-<script>
+<script type="application/ld+json">
     {
-        "@context":"https://schema.org",
-        "@type":"ItemList",
+        "@context": "https://schema.org",
+        "@type": "ItemList",
         "url": "{{canonical_url_base}}{% url 'category-slug' category.slug %}",
         "itemListElement":[
             {% for product in category|products %}
@@ -118,6 +126,6 @@
             },
             {% endfor %}
         ]
-      }
+    }
 </script>
 {% endblock %}
