@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.sitemaps import ping_google
 from tinymce.models import HTMLField
 from django.utils.html import mark_safe
 from django.utils.text import slugify
