@@ -15,7 +15,7 @@
 <meta property="og:image" content="{{image.large}}" />
 {% endfor %}
 <!-- Canonical -->
-<link rel="canonical" href="{% if request.is_secure %}https://{% else %}http://{% endif %}{{request.get_host}}{% url 'product-slug' product.slug %}">
+<link rel="canonical" href="{{canonical_url_base}}{% url 'product-slug' product.slug %}">
 {% endblock %}
 
 {% block content %}
@@ -105,7 +105,8 @@
     {
         "@context": "https://schema.org",
         "@type": "Product",
-        "asin": "{{product.asin}}"
+        "asin": "{{product.asin}}",
+        "url":"{{canonical_url_base}}{% url 'product-slug' product.slug %}",
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "{{product.rating}}",
@@ -127,17 +128,17 @@
         "review": [
             {% for review in product.reviews.all %}
             {
-            "@type": "Review",
-            "author": "{{review.author}}",
-            "datePublished": "{{review.created_date}}",
-            "reviewBody": "{{review.text}}",
-            "name": "{{review.title}}",
-            "reviewRating": {
-                "@type": "Rating",
-                "bestRating": "5",
-                "ratingValue": "{{review.rating}}",
-                "worstRating": "1"
-            }
+                "@type": "Review",
+                "author": "{{review.author}}",
+                "datePublished": "{{review.created_date}}",
+                "reviewBody": "{{review.text}}",
+                "name": "{{review.title}}",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "bestRating": "5",
+                    "ratingValue": "{{review.rating}}",
+                    "worstRating": "1"
+                }
             },
             {% endfor %}
         ]

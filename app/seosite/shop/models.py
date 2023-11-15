@@ -69,7 +69,7 @@ class Category(WebComponentModel):
 
     # Sitemap.xml
     def get_absolute_url(self):
-        return reverse("category-detail", args=[self.pk])
+        return reverse("category-slug", args=[self.slug])
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -177,7 +177,7 @@ class Product(WebComponentModel):
 
     # Sitemap.xml
     def get_absolute_url(self):
-        return reverse("product-detail", args=[self.pk])
+        return reverse("product-slug", args=[self.slug])
 
 
 class ProductImage(models.Model):

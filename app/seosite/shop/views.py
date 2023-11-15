@@ -14,9 +14,12 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+
 # from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import HttpResponse
 from django.views.decorators.http import require_GET
+import os
+
 
 # Website Views
 class HomeView(ListView):
@@ -27,29 +30,31 @@ class HomeView(ListView):
 class ProductListView(ListView):
     model = Category
     queryset = Product.objects.filter(visible=True)
-    template_name = 'giftos/product/views/list.html'
+    template_name = "giftos/product/views/list.html"
 
 
 class ProductDetailView(DetailView):
     context_object_name = "product"
     queryset = Product.objects.filter(visible=True)
-    template_name = 'giftos/product/views/detail.html'
+    template_name = "giftos/product/views/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["canonical_url_base"] = os.getenv("CANONICAL_URL_BASE")
         return context
 
 
 class CategoryListView(ListView):
     model = Category
     queryset = Category.objects.filter(visible=True)
-    template_name = 'giftos/category/views/list.html'
+    template_name = "giftos/category/views/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["canonical_url_base"] = os.getenv("CANONICAL_URL_BASE")
 
         return context
 
@@ -57,7 +62,7 @@ class CategoryListView(ListView):
 class CategoryDetailView(DetailView):
     context_object_name = "category"
     queryset = Category.objects.all()
-    template_name = 'giftos/category/views/detail.html'
+    template_name = "giftos/category/views/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -96,13 +101,16 @@ class CategoryDetailView(DetailView):
 
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
 
+        context["canonical_url_base"] = os.getenv("CANONICAL_URL_BASE")
+
         return context
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
-    search_fields = ['title', 'product__ext_ref']
+    search_fields = ["title", "product__ext_ref"]
     filterset_fields = "__all__"
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
@@ -113,7 +121,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
-    search_fields = ['title', 'ext_ref']
+    search_fields = ["title", "ext_ref"]
     filterset_fields = ["parent", "featured", "visible"]
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
@@ -136,7 +144,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
-    search_fields = ['title', 'ext_ref']
+    search_fields = ["title", "ext_ref"]
     filterset_fields = "__all__"
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
@@ -313,7 +321,7 @@ class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
-    search_fields = ['product__title', 'product__ext_ref']
+    search_fields = ["product__title", "product__ext_ref"]
     filterset_fields = "__all__"
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
@@ -329,5 +337,3 @@ def robots_txt(request):
     Sitemap: {request.build_absolute_uri('/sitemap.xml')}
     """
     return HttpResponse(robots_txt_content, content_type="text/plain")
-
-
