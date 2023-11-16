@@ -17,26 +17,22 @@
 
 {% block content %}
 <!-- CATEGORIES NAV -->
-{% include "giftos/category/components/nav.html" with categories=shop_categories active_category=category %}
+{% include "giftos/category/components/nav.html" with categories=shop_categories %}
 
 <!-- CATEGORY DETAILS - DESCRIPTION -->
 <section class="my-4">
     <div class="container">
-        <div class="row py-3">
-            <div class="col-12 text-center">
-                <h1 class="text-uppercase" style="font-size: 2.3rem;">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-7 text-center" style="font-size: 1.25rem;">
+                <h1 class="pb-3" style="font-size: 2.7rem;">
                     {{category.title}}
                 </h1>
-            </div>
-        </div>
-        <div class="row pt-3 align-items-center">
-            <div class="col-12 col-md-7" style="font-size: 1.25rem;">
                 <p class="text-center">
                     {{category.description}}
                 </p>
             </div>
             <div class="col-12 col-md-5 overflow-hidden d-flex align-items-center justify-content-center" style="font-size: 1.25rem; height: 30vh;">
-                <img height="100%" width="auto" data-src="{% if category.image %}{{category.image.url}}{% endif %}" class="lazy" alt="Imagen de la categoría {{category.title}}">
+                <img  style="height:100%;width:auto;" height="300" width="300" data-src="{% if category.image %}{{category.image.url}}{% endif %}" class="lazy" alt="Imagen de la categoría {{category.title}}">
                 </p>
             </div>
         </div>
@@ -49,6 +45,39 @@
         {% endif %}
     </div>
 </section>
+
+{% with subcategories=category|childs %}
+{% if subcategories.count > 0 %}
+<div class="container">
+    <ul class="nav border-top border-bottom border-secondary w-100 justify-content-center text-uppercase"  style="font-size: 1.2rem;"  id="navbarSubCategories">
+        {% for subcategory in subcategories %}
+        {% with childs=subcategory|childs %}
+        {% if childs.count > 0 %}
+        <li class="nav-item dropdown px-4 d-flex flex-wrap justify-content-center align-items-center">
+            <a style="color: black;" href="{% url 'category-slug' subcategory.slug %}">
+                {{subcategory.title}}
+            </a>
+            <a style="color: black;" role="button" href="#" class="nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </a>
+            <div class="dropdown-menu">
+                {% for child in childs %}
+                <a class="dropdown-item" href="{% url 'category-slug' child.slug %}">{{child.title}}</a>
+                {% endfor %}
+            </div>
+        </li>
+        {% else %}
+        <li class="nav-item px-4">
+            <a style="color: black;" class="nav-link"
+                href="{% url 'category-slug' subcategory.slug %}">{{subcategory.title}}</a>
+        </li>
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
 
 <!-- SUB CATEGORIES LIST -->
 {% if category.childs.all.count > 0 %}

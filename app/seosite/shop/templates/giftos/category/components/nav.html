@@ -24,36 +24,3 @@
     {% endwith %}
     {% endfor %}
 </ul>
-
-{% if active_category %}
-{% with subcategories=active_category|childs %}
-{% if subcategories.count > 0 %}
-<ul class="nav w-100 justify-content-center mt-3 upper text-uppercase"  style="font-size: 1.2rem;"  id="navbarSubCategories">
-    {% for subcategory in subcategories %}
-    {% with childs=subcategory|childs %}
-    {% if childs.count > 0 %}
-    <li class="nav-item dropdown px-4 d-flex flex-wrap justify-content-center align-items-center">
-        <a style="color: black;" href="{% url 'category-slug' subcategory.slug %}">
-            {{subcategory.title}}
-        </a>
-        <a style="color: black;" role="button" href="#" class="nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-        </a>
-        <div class="dropdown-menu">
-            {% for child in childs %}
-            <a class="dropdown-item" href="{% url 'category-slug' child.slug %}">{{child.title}}</a>
-            {% endfor %}
-        </div>
-    </li>
-    {% else %}
-    <li class="nav-item px-4">
-        <a style="color: black;" class="nav-link"
-            href="{% url 'category-slug' subcategory.slug %}">{{subcategory.title}}</a>
-    </li>
-    {% endif %}
-    {% endwith %}
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
-{% endif %}
