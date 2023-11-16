@@ -15,11 +15,6 @@
 <link rel="canonical" href="{{shop_config.canonical_url}}{% url 'category-slug' category.slug %}">
 {% endblock %}
 
-
-
-<!-- FEATURED PRODUCTS -->
-{% block hero %}{% include "giftos/product/components/hero.html" with products=featured_products %}{% endblock %}
-
 {% block content %}
 <!-- CATEGORIES NAV -->
 {% include "giftos/category/components/nav.html" with categories=shop_categories active_category=category %}

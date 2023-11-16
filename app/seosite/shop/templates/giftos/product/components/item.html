@@ -2,10 +2,10 @@
 {% load shop_extras %}
 
 <div class="col-6 col-lg-4 col-xl-3 mt-4">
-    <div class="bg-white px-3 shadow pt-3 rounded-lg d-flex flex-wrap justify-content-center text-center overflow-hidden">
+    <div class="{% if product.featured %}bg-primary{% else %}bg-white{% endif %} px-3 shadow pt-3 rounded-lg d-flex flex-wrap justify-content-center text-center overflow-hidden">
         <a target="_blank" href="{{product.url_affiliate}}">
-            <img alt="Product image for {{product.title}}" class="lazy" width="auto" height="200px" src="{{ product.images.first.thumb }}"
-                data-src="{{ product.images.first.medium }}" />
+            <img alt="Product image for {{product.title}}" class="lazy" width="200" height="200" src="{{ product.images.first.thumb }}"
+                data-src="{{ product.images.first.medium }}" style="height:200px;width:auto;"/>
         </a>
         <a class="pt-3" href="{% url 'product-slug' product.slug %}">
             <h3 class="lh-1 overflow-hidden" style="height: 4.5rem; color: black; font-size: 1.25rem;">
