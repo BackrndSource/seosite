@@ -1,3 +1,4 @@
+import datetime
 from django import template
 
 register = template.Library()
@@ -28,9 +29,13 @@ def price_int(value):
 
 @register.filter
 def childs(category):
-    return category.childs.filter(visible=True).order_by("featured")
+    return category.childs.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now()).order_by("featured")
 
 
 @register.filter
 def products(category, num=8):
-    return category.products.filter(visible=True).order_by("-featured", "-rating_count", "-last_modified")[:num]
+    return (
+        category.products.filter(visible=True)
+        .exclude(publish_date__gte=datetime.datetime.now())
+        .order_by("-featured", "-rating_count", "-last_modified")[:num]
+    )

@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category, Product, ProductImage, Review, Config
@@ -28,25 +29,29 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None).exclude(
+            publish_date__gte=datetime.datetime.now()
+        )
         context["shop_config"] = Config.objects.first()
         return context
 
 
 class ProductListView(ListView):
     model = Category
-    queryset = Product.objects.filter(visible=True)
+    queryset = Product.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = "giftos/product/views/list.html"
 
 
 class ProductDetailView(DetailView):
     context_object_name = "product"
-    queryset = Product.objects.filter(visible=True)
+    queryset = Product.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = "giftos/product/views/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None).exclude(
+            publish_date__gte=datetime.datetime.now()
+        )
         context["shop_config"] = Config.objects.first()
         return context
 
@@ -58,7 +63,9 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None).exclude(
+            publish_date__gte=datetime.datetime.now()
+        )
         context["shop_config"] = Config.objects.first()
         return context
 
@@ -70,26 +77,16 @@ class CategoryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add 'product reviews' in selected 'category' to the view context
-        # SQLiteDB doesnt have Distinct lookup implementation, then we do manually.
-        # products = Product.objects.filter(categories__in=[self.get_object()])
-
-        products = self.get_object().products.filter(visible=True)
+        # ALL PRODUCTS
+        products = self.get_object().products.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
+        # REVIEWS
         reviews = []
         for product in products:
-            latest_obj = (
-                Review.objects.filter(product=product, product__visible=True).order_by("-rating").first()
-            )  # Get only the best rated review per product in category
-            if latest_obj:
-                reviews.append(latest_obj)
-        context["reviews"] = reviews
+            reviews.append(product.reviews.first())
+            if len(reviews) >= 10:
+                break
 
-        # Disctint lookup for DB supporting it
-        # context["reviews"] = Review.objects.filter(
-        #     product__in=Product.objects.filter(
-        #         categories__in=[self.get_object()]
-        #     )
-        # ).order_by("-rating").distinct("product")
+        context["reviews"] = reviews
 
         context["featured_products"] = products.filter(featured=True).order_by(
             "-last_modified", "-rating_count", "-rating"
@@ -104,7 +101,9 @@ class CategoryDetailView(DetailView):
             "-rating", "-rating_count", "-last_modified"
         )
 
-        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None).exclude(
+            publish_date__gte=datetime.datetime.now()
+        )
         context["shop_config"] = Config.objects.first()
 
         return context
