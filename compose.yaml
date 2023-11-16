@@ -69,7 +69,6 @@ services:
         networks:
             - seosite_backend
         volumes:
-            - ./app/static:/static
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         ports:
             - "80:80"
@@ -83,6 +82,7 @@ networks:
         name: seosite_backend
         external: false
 
+volumes:
     globos_static:
         name: globos_static
         external: false
@@ -96,6 +96,3 @@ networks:
     deninos_uploads:
         name: deninos_uploads
         external: false
-
-volumes:
-    static:
