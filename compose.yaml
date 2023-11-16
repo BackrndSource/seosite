@@ -17,8 +17,6 @@ services:
             - seosite_backend
         volumes:
             - ./app/seosite:/app
-            - deninos_static:/static
-            - deninos_uploads:/uplaods
         env_file:
             - ./sites/deninos/.env
 
@@ -37,8 +35,6 @@ services:
             - seosite_backend
         volumes:
             - ./app/seosite:/app
-            - globos_static:/static
-            - globos_uploads:/uplaods
         env_file:
             - ./sites/globos/.env
 
@@ -80,19 +76,4 @@ services:
 networks:
     seosite_backend:
         name: seosite_backend
-        external: false
-
-volumes:
-    globos_static:
-        name: globos_static
-        external: false
-    deninos_static:
-        name: deninos_static
-        external: false
-
-    globos_uploads:
-        name: globos_uploads
-        external: false
-    deninos_uploads:
-        name: deninos_uploads
         external: false

@@ -144,7 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "../static/"
+STATIC_ROOT = os.getenv("STATIC_ROOT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -152,7 +152,7 @@ STATIC_ROOT = "../static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "../uploads")
+MEDIA_ROOT = os.path.join(BASE_DIR, os.getenv("MEDIA_ROOT"))
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
