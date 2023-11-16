@@ -15,7 +15,7 @@
 <meta property="og:image" content="{{image.large}}" />
 {% endfor %}
 <!-- Canonical -->
-<link rel="canonical" href="{{canonical_url_base}}{% url 'product-slug' product.slug %}">
+<link rel="canonical" href="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
 {% endblock %}
 
 {% block content %}
@@ -108,7 +108,7 @@
         "@context": "https://schema.org",
         "@type": "Product",
         "asin": "{{product.asin}}",
-        "url":"{{canonical_url_base}}{% url 'product-slug' product.slug %}",
+        "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "{{product.rating}}",

@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from .views import (
+    HomeView,
     CategoryViewSet,
     ProductViewSet,
     ProductImageViewSet,
@@ -25,7 +26,8 @@ sitemaps = {
 
 urlpatterns = [
     # Category
-    path("", CategoryListView.as_view(), name="category-list"),
+    path("", HomeView.as_view(), name="shop-home"),
+    # path("categorias/", CategoryListView.as_view(), name="category-list"),
     path("categoria/<int:pk>/", CategoryDetailView.as_view(), name="category-detail"),
     path("<slug:slug>/", CategoryDetailView.as_view(), name="category-slug"),
     # Product

@@ -1,6 +1,6 @@
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Category, Product, ProductImage, Review
+from .models import Category, Product, ProductImage, Review, Config
 from .serializers import (
     CategorySerializer,
     ProductSerializer,
@@ -21,10 +21,16 @@ from django.views.decorators.http import require_GET
 import os
 
 
-# Website Views
 class HomeView(ListView):
     model = Category
-    queryset = Category.objects.filter(parent=None)
+    queryset = Category.objects.filter(visible=True)
+    template_name = "giftos/views/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
+        context["shop_config"] = Config.objects.first()
+        return context
 
 
 class ProductListView(ListView):
@@ -41,7 +47,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
-        context["canonical_url_base"] = os.getenv("CANONICAL_URL_BASE")
+        context["shop_config"] = Config.objects.first()
         return context
 
 
@@ -52,10 +58,8 @@ class CategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
-        context["canonical_url_base"] = os.getenv("CANONICAL_URL_BASE")
-
+        context["shop_config"] = Config.objects.first()
         return context
 
 
@@ -69,6 +73,7 @@ class CategoryDetailView(DetailView):
         # Add 'product reviews' in selected 'category' to the view context
         # SQLiteDB doesnt have Distinct lookup implementation, then we do manually.
         # products = Product.objects.filter(categories__in=[self.get_object()])
+
         products = self.get_object().products.filter(visible=True)
         reviews = []
         for product in products:
@@ -100,8 +105,7 @@ class CategoryDetailView(DetailView):
         )
 
         context["shop_categories"] = Category.objects.filter(visible=True, parent=None)
-
-        context["canonical_url_base"] = os.getenv("CANONICAL_URL_BASE")
+        context["shop_config"] = Config.objects.first()
 
         return context
 

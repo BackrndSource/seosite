@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>{% block title %}{% endblock %} - {% block title_end %}deniños.com{% endblock %}</title>
+    <title>{% block title %}{% endblock %}{% block title_end %}{{shop_config.title_decorator}}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
 
@@ -21,7 +21,7 @@
     {% block meta_extra %}{% endblock %}
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{% static 'shop/favicon.png' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{shop_config.favicon}}" type="image/x-icon">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
