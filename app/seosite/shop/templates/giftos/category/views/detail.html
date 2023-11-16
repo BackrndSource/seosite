@@ -18,7 +18,9 @@
 
 
 <!-- FEATURED PRODUCTS -->
+{% if featured_products.count > 0 %}
 {% block hero %}{% include "giftos/product/components/hero.html" with products=featured_products %}{% endblock %}
+{% endif %}
 
 {% block content %}
 <!-- CATEGORIES NAV -->

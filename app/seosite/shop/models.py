@@ -72,6 +72,8 @@ class Category(WebComponentModel):
         return reverse("category-slug", args=[self.slug])
 
     def save(self, *args, **kwargs):
+        if self.id:
+            self.slug = slugify(self.slug) if self.slug else slugify(self.title)
         super().save(*args, **kwargs)
         try:
             # Sitemap.xml - Ping Google on Updates
@@ -162,7 +164,7 @@ class Product(WebComponentModel):
                 for parent in parents:
                     self.categories.add(parent)
             # Add slug based in title
-            self.slug = self.slug if self.slug else slugify(self.title)
+            self.slug = slugify(self.slug) if self.slug else slugify(self.title)
 
         super(Product, self).save(*args, **kwargs)
         try:
