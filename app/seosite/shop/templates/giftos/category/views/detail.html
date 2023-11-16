@@ -34,10 +34,14 @@
                 </h1>
             </div>
         </div>
-        <div class="row pt-3">
-            <div class="col-12" style="font-size: 1.25rem;">
+        <div class="row pt-3 align-items-center">
+            <div class="col-12 col-md-7" style="font-size: 1.25rem;">
                 <p class="text-center">
                     {{category.description}}
+                </p>
+            </div>
+            <div class="col-12 col-md-5 overflow-hidden d-flex align-items-center justify-content-center" style="font-size: 1.25rem; height: 30vh;">
+                <img height="100%" width="auto" data-src="{% if category.image %}{{category.image.url}}{% endif %}" class="lazy" alt="Imagen de la categoría {{category.title}}">
                 </p>
             </div>
         </div>
