@@ -11,7 +11,7 @@ class WebComponentModel(models.Model):
     slug = models.CharField(unique=True, blank=True, null=False, max_length=254)
     description = models.TextField(blank=True, null=True, max_length=5000)
     meta_description = models.TextField(blank=True, null=True, max_length=5000)
-    keywords = models.CharField(max_length=5000, null=True, blank=True)
+    keywords = models.TextField(max_length=5000, null=True, blank=True)
     text = HTMLField(blank=True, null=True, max_length=20000)
     visible = models.BooleanField(blank=False, null=False, default=True)
     featured = models.BooleanField(default=False)
@@ -229,4 +229,14 @@ class Review(models.Model):
 
 class Config(models.Model):
     name = models.CharField(unique=True, blank=False, null=False, max_length=100)
-    value = models.CharField(unique=True, blank=False, null=False, max_length=254)
+    canonical_url = models.URLField(max_length=254, null=True, blank=True)
+
+    logo = models.ImageField(null=True, blank=True)
+    favicon = models.ImageField(null=True, blank=True)
+    title_home = models.CharField(unique=True, blank=True, null=True, max_length=100)
+    title_decorator = models.CharField(unique=True, blank=True, null=True, max_length=100)
+    description_home = HTMLField(blank=True, null=True, max_length=20000)
+    keywords_home = models.TextField(max_length=5000, blank=True, null=True)
+
+    shop_active = models.BooleanField(blank=False, null=False, default=True)
+    shop_theme = models.CharField(unique=True, blank=False, null=False, max_length=100, default="giftos")

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Product, ProductImage, Category, Review
-from .forms import ProductForm, ProductImageForm, CategoryForm, ReviewForm
+from .models import Product, ProductImage, Category, Review, Config
+from .forms import ProductForm, ProductImageForm, CategoryForm, ReviewForm, ConfigForm
 from import_export.admin import ExportActionModelAdmin
 from django.urls import reverse
 
@@ -59,4 +59,24 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ("title", "author", "text")
     list_filter = ("rating", "product")
     form = ReviewForm
+    list_per_page = 10
+
+
+@admin.register(Config)
+class ConfigAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "canonical_url",
+        "logo",
+        "title_home",
+        "title_decorator",
+        "shop_active",
+        "shop_theme",
+    )
+    search_fields = ("title_home", "name", "canonical_url")
+    list_filter = (
+        "shop_active",
+        "shop_theme",
+    )
+    form = ConfigForm
     list_per_page = 10
