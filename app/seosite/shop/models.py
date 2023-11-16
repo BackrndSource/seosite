@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.sitemaps import ping_google
 from tinymce.models import HTMLField
@@ -17,6 +18,7 @@ class WebComponentModel(models.Model):
     featured = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     last_modified = models.DateTimeField(auto_now=True, blank=False, null=False)
+    publish_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     ext_ref = models.CharField(unique=True, blank=True, null=True, max_length=200)
 
     def description_tag(self):
@@ -235,8 +237,10 @@ class Config(models.Model):
     favicon = models.ImageField(null=True, blank=True)
     title_home = models.CharField(unique=True, blank=True, null=True, max_length=100)
     title_decorator = models.CharField(unique=True, blank=True, null=True, max_length=100)
-    description_home = HTMLField(blank=True, null=True, max_length=20000)
+    description_home = models.TextField(blank=True, null=True, max_length=5000)
+    text_home = HTMLField(blank=True, null=True, max_length=20000)
     keywords_home = models.TextField(max_length=5000, blank=True, null=True)
+    image_home = models.ImageField(null=True, blank=True)
 
     shop_active = models.BooleanField(blank=False, null=False, default=True)
     shop_theme = models.CharField(unique=True, blank=False, null=False, max_length=100, default="giftos")
