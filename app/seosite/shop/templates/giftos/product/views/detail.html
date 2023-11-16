@@ -5,18 +5,29 @@
 {% block meta_description %}{{product.meta_description|slice:":159"}}{% endblock %}
 {% block meta_keywords %}{{product.keywords}}{% endblock %}
 
-{% block og_title %}{{product.title}}{% endblock %}
-{% block og_description %}{{product.meta_description}}{% endblock %}
-{% block og_type %}article{% endblock %}
-
 {% block meta_extra %}
-<!-- OpenGraph Product Images -->
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content="{{product.title}}">
+<meta property="og:description" content="{{product.meta_description}}">
 {% for image in product.images.all %}
 <meta property="og:image" content="{{image.large}}" />
 {% endfor %}
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="{{shop_config.canonical_url}}">
+<meta property="twitter:url" content="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
+<meta name="twitter:title" content="{{product.title}}">
+<meta name="twitter:description" content="{{product.meta_description}}">
+<meta name="twitter:image" content="{{product.images.first.large}}">
+  
 <!-- Canonical -->
 <link rel="canonical" href="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
 {% endblock %}
+
 
 {% block content %}
 
@@ -116,11 +127,7 @@
         },
         "description": "{{product.description}}",
         "name": "{{product.title}}",
-        "image":  [
-            {% for image in product.images.all %}
-            "{{image.large}}",
-            {% endfor %}
-        ],
+        "image": "{{product.images.first.large}}",
         "offers": {
             "@type": "Offer",
             "availability": "https://schema.org/InStock",
