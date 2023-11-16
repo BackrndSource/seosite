@@ -22,7 +22,7 @@
 <meta property="twitter:url" content="{{shop_config.canonical_url}}{% url 'category-slug' category.slug %}">
 <meta name="twitter:title" content="{{category.title}}">
 <meta name="twitter:description" content="{{category.meta_description}}">
-<meta name="twitter:image" content="{{shop_config.canonical_url}}{{category.image.url}}">
+<meta name="twitter:image" content="{% if category.image %}{{shop_config.canonical_url}}{{category.image.url}}{% endif %}">
   
 <!-- Canonical -->
 <link rel="canonical" href="{{shop_config.canonical_url}}{% url 'category-slug' category.slug %}">
