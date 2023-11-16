@@ -119,7 +119,6 @@
         "@context": "https://schema.org",
         "@type": "Product",
         "asin": "{{product.asin}}",
-        "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "{{product.rating}}",
@@ -148,7 +147,7 @@
                     "ratingValue": "{{review.rating}}",
                     "worstRating": "1"
                 }
-            },
+            }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ]
     }
