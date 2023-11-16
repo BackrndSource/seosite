@@ -32,5 +32,5 @@ def childs(category):
 
 
 @register.filter
-def products(category):
-    return category.products.filter(visible=True).order_by("-featured", "-rating_count", "-last_modified")
+def products(category, num=8):
+    return category.products.filter(visible=True).order_by("-featured", "-rating_count", "-last_modified")[:num]
