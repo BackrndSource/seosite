@@ -1,7 +1,7 @@
 {% load static %}
 <div class="d-flex justify-content-center align-items-center pt-2">
     <a href="{% url 'shop-home' %}">
-        <img src="{{shop_config.logo.url}}" height="128px" alt="Logo {{shop_config.name}}" />
+        <img src="{% if shop_config.logo %}{{shop_config.logo.url}}{% endif %}" height="128px" alt="Logo {{shop_config.name}}" />
     </a>
 </div>
 <nav class="navbar navbar-expand-md navbar-light align-items-center justify-content-center">
