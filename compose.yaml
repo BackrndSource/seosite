@@ -2,13 +2,13 @@ version: '3'
 
 services:
 
-    # Django app
-    seosite-app: 
+    # Site #1 default
+    deninos-app: 
         build:
             context: app
             target: builder
         # image: seosite-app
-        container_name: seosite-app
+        container_name: deninos-app
         restart: always
         depends_on:
             seosite-db:
@@ -17,31 +17,55 @@ services:
             - seosite_backend
         volumes:
             - ./app/seosite:/app
-            - ./app/static:/static
-            - ./app/uploads:/uplaods
+            - ./sites/deninos/static:/static
+            - ./sites/deninos/uploads:/uplaods
         env_file:
-            - ./app/.env
+            - ./sites/deninos/.env
+
+    # Site #1 default
+    globos-app: 
+        build:
+            context: app
+            target: builder
+        # image: seosite-app
+        container_name: globos-app
+        restart: always
+        depends_on:
+            seosite-db:
+                condition: service_healthy
+        networks:
+            - seosite_backend
+        volumes:
+            - ./app/seosite:/app
+            - ./sites/globos/static:/static
+            - ./sites/globos/uploads:/uplaods
+        env_file:
+            - ./sites/globos/.env
 
     # Database 
     seosite-db:
         image: mysql:8.2.0
         container_name: seosite-db
         restart: always
+        command: --init-file /data/application/init.sql
         networks:
             - seosite_backend
         volumes:
             - ./db/data:/var/lib/mysql
+            - ./db/init.sql:/data/application/init.sql
         env_file:
             - ./db/.env
         healthcheck:
             test: mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD
             start_period: 20s
             interval: 5s
-            retries: 10
+            retries: 50
 
+    # Nginx Server
     seosite-nginx:
         container_name: seosite-nginx
         image: nginx:1.25.3-alpine-slim
+        restart: always
         networks:
             - seosite_backend
         volumes:
@@ -49,16 +73,10 @@ services:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
         ports:
             - "80:80"
+            - "81:81"
         depends_on:
-            - seosite-app
-    # adminer:
-    #     image: adminer
-    #     container_name: seosite_adminer
-    #     restart: always
-    #     links:
-    #         - db:db
-    #     ports:
-    #         - 8080:8080
+            - deninos-app
+            - globos-app
 
 networks:
     seosite_backend:

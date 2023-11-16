@@ -2,6 +2,7 @@
 
 app/static/
 app/uploads/
+sites/
 
 # Database Data
 db/data/
