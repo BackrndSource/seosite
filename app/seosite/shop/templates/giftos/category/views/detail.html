@@ -147,24 +147,74 @@
         "itemListElement":[
             {% for product in category|products %}
             {
-                "@type":"Product",
+                "@type": "Product",
+                "position": {{foorloop.counter}}
                 "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
                 "asin": "{{product.asin}}",
                 "aggregateRating": {
                     "@type": "AggregateRating",
-                    "ratingValue": "{{product.rating}}",
-                    "reviewCount": "{{product.rating_count}}"
+                    "ratingValue": {{product.rating}}|stringformat:'.2f',
+                    "reviewCount": {{product.rating_count}}
                 },
                 "description": "{{product.description}}",
                 "name": "{{product.title}}",
-                "image":  [
-                    "{{product.images.first.large}}"
-                ],
+                "image": "{{product.images.first.large}}",
                 "offers": {
                     "@type": "Offer",
                     "availability": "https://schema.org/InStock",
-                    "price": "{{product.price}}",
-                    "priceCurrency": "EUR"
+                    "price": {{product.price}}|stringformat:'.2f',
+                    "priceCurrency": "EUR",
+                    "priceValidUntil": "2025-01-01",
+                    "shippingDetails": {
+                        "@type": "OfferShippingDetails",
+                        "deliveryTime": {
+                            "@type": "ShippingDeliveryTime",
+                            "businessDays": {
+                                "@type": "OpeningHoursSpecification",
+                                "dayOfWeek": [
+                                    "https://schema.org/Monday",
+                                    "https://schema.org/Tuesday",
+                                    "https://schema.org/Wednesday",
+                                    "https://schema.org/Thursday",
+                                    "https://schema.org/Friday",
+                                    "https://schema.org/Saturday",
+                                    "https://schema.org/Sunday"
+                                ]
+                            },
+                            "cutoffTime": "12:00:15Z",
+                            "handlingTime": {
+                                "@type": "QuantitativeValue",
+                                "minValue": 1,
+                                "maxValue": 2,
+                                "unitCode": "d"
+                            },
+                            "transitTime": {
+                                "@type": "QuantitativeValue",
+                                "minValue": 1,
+                                "maxValue": 3,
+                                "unitCode": "d"
+                            }
+                        },
+                        "shippingRate": {
+                            "@type": "MonetaryAmount",
+                            "value": 0,
+                            "currency": "EUR"
+                        }
+                    },
+                    "hasMerchantReturnPolicy": {
+                        "@type": "MerchantReturnPolicy",
+                        "returnPolicyCategory": "http://schema.org/MerchantReturnUnlimitedWindow",
+                        "returnFees": "http://schema.org/FreeReturn",
+                        "refundType": "https://schema.org/FullRefund",
+                        "returnPolicyCountry": "ES",
+                        "merchantReturnDays": 30,
+                        "merchantReturnLink": "https://deniños.com/politica-de-devolucion",
+                        "restockingFee": {
+                        "@type": "MonetaryAmount",
+                        "value": 0,
+                        "currency": "EUR"
+                        }
+                    }
                 }
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
