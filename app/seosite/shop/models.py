@@ -77,11 +77,12 @@ class Category(WebComponentModel):
         if self.id:
             self.slug = slugify(self.slug) if self.slug else slugify(self.title)
         super().save(*args, **kwargs)
-        try:
-            # Sitemap.xml - Ping Google on Updates
-            ping_google()
-        except Exception:
-            pass
+        if self.visible:
+            try:
+                # Sitemap.xml - Ping Google on Updates
+                ping_google()
+            except Exception:
+                pass
 
     class Meta:
         verbose_name_plural = "categories"
@@ -169,11 +170,13 @@ class Product(WebComponentModel):
             self.slug = slugify(self.slug) if self.slug else slugify(self.title)
 
         super(Product, self).save(*args, **kwargs)
-        try:
-            # Sitemap.xml - Ping Google on Updates
-            ping_google()
-        except Exception:
-            pass
+
+        if self.visible:
+            try:
+                # Sitemap.xml - Ping Google on Updates
+                ping_google()
+            except Exception:
+                pass
 
     def create(self, data):
         product, created = Product.objects.update_or_create(asin=data.get("asin", None), defaults={data})
