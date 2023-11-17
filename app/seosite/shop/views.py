@@ -144,7 +144,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related("images", "reviews")
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
     search_fields = ["title", "ext_ref"]
@@ -327,7 +327,7 @@ class ProductImageViewSet(viewsets.ModelViewSet):
     search_fields = ["product__title", "product__ext_ref"]
     filterset_fields = "__all__"
     ordering_fields = "__all__"
-    ordering = ["-last_modified"]
+    ordering = ["-position"]
     permission_classes = [IsAuthenticated]
 
 
