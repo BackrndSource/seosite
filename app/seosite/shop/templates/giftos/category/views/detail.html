@@ -148,7 +148,7 @@
             {% for product in category|products %}
             {
                 "@type": "Product",
-                "position": {{foorloop.counter}}
+                "position": "{{forloop.counter}}",
                 "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
                 "asin": "{{product.asin}}",
                 "aggregateRating": {
