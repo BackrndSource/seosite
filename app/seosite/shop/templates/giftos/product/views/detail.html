@@ -131,7 +131,7 @@
         {% for image in product.images.all %}
         "{{images.large}}"{% if not forloop.last %},{% endif %}
         {% endfor %}
-        ]
+        ],
         "offers": {
             "@type": "Offer",
             "availability": "https://schema.org/InStock",
