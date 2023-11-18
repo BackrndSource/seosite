@@ -122,8 +122,8 @@
         "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
         "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "{{product.rating}}|stringformat:'.2f'",
-            "reviewCount": "{{product.rating_count}}"
+            "ratingValue": {{product.rating|stringformat:'.2f'}},
+            "reviewCount": {{product.rating_count}}
         },
         "description": "{{product.description}}",
         "name": "{{product.title}}",
@@ -135,7 +135,7 @@
         "offers": {
             "@type": "Offer",
             "availability": "https://schema.org/InStock",
-            "price": "{{product.price}}|stringformat:'.2f'",
+            "price": {{product.price|stringformat:'.2f'}},
             "priceCurrency": "EUR",
             "priceValidUntil": "2025-01-01",
             "shippingDetails": {
@@ -199,7 +199,7 @@
                 "reviewRating": {
                     "@type": "Rating",
                     "bestRating": 5,
-                    "ratingValue": {{review.rating}}|stringformat:'.2f',
+                    "ratingValue": {{review.rating|stringformat:'.2f'}},
                     "worstRating": 1
                 }
             }{% if not forloop.last %},{% endif %}

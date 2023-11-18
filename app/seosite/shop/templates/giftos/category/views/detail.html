@@ -153,7 +153,7 @@
                 "asin": "{{product.asin}}",
                 "aggregateRating": {
                     "@type": "AggregateRating",
-                    "ratingValue": {{product.rating}}|stringformat:'.2f',
+                    "ratingValue": {{product.rating|stringformat:'.2f'}},
                     "reviewCount": {{product.rating_count}}
                 },
                 "description": "{{product.description}}",
@@ -162,7 +162,7 @@
                 "offers": {
                     "@type": "Offer",
                     "availability": "https://schema.org/InStock",
-                    "price": {{product.price}}|stringformat:'.2f',
+                    "price": {{product.price|stringformat:'.2f'}},
                     "priceCurrency": "EUR",
                     "priceValidUntil": "2025-01-01",
                     "shippingDetails": {
