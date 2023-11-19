@@ -37,7 +37,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filterset_fields = ["parent", "featured", "visible"]
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
     def search_ext_ref(self, request):
@@ -55,7 +55,7 @@ class PostViewSet(viewsets.ModelViewSet):
     filterset_fields = "__all__"
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["post"], serializer_class=SearchByExternalReferenceSerializer)
     def search_ext_ref(self, request):
