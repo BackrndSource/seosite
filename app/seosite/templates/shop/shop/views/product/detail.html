@@ -41,7 +41,7 @@
         <div class="row ">
             <div class="col-xl-5 py-3 d-flex justify-content-center"> 
                 <div class="carousel slide overflow-hidden" style="max-width: 500px;" data-ride="carousel" id="productImagesCarousel">
-                    <div class="carousel-inner" role="listbox">
+                    <div class="carousel-inner">
                         {% for image in product.images.all %}
                         <div class="carousel-item {% if forloop.first %} active{% endif %}">
                             <div style="height:50vh">
