@@ -51,16 +51,16 @@ font-family:'poppins',sans-serif;">
     {% include "common/common/components/footer.html" %}
     {% endblock %}
     <!-- JQuery -->
-    <script src="{% static 'common/js/jquery-3.7.1.slim.min.js' %}" ></script>
+    <script defer async src="{% static 'common/js/jquery-3.7.1.slim.min.js' %}" ></script>
     <!-- Bootstrap JS -->
-    <script src="{% static 'common/js/bootstrap.bundle.min.js' %}" ></script>
+    <script defer async src="{% static 'common/js/bootstrap.bundle.min.js' %}" ></script>
     <!-- LazyLoad Init -->
     <script>
         var lazyLoadInstance = new LazyLoad({});
     </script>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{SITE_GTAG_ID}}"></script>
-    <script defer>
+    <script defer async src="https://www.googletagmanager.com/gtag/js?id={{SITE_GTAG_ID}}"></script>
+    <script defer async>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
