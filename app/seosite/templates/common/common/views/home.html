@@ -1,2 +1,97 @@
 {% extends "common/common/layouts/base.html" %}
-sass
+
+{% load common_extras %}
+
+{% block title %}{{site_config.title_home}}{% endblock %}
+{% block meta_description %}{{site_config.description_home|slice:":159"}}{% endblock %}
+{% block meta_keywords %}{{site_config.keywords_home}}{% endblock %}
+
+{% block meta_extra %}
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="{{site_config.canonical_url}}{% url 'site-home' %}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content="{{site_config.title_home}}">
+<meta property="og:description" content="{{site_config.description_home}}{% url 'site-home' %}">
+<meta property="og:image" content="{% if site_config.image_home %}{{site_config.image_home.url}}{% endif %}">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="{{site_config.canonical_url}}">
+<meta property="twitter:url" content="{{site_config.canonical_url}}">
+<meta name="twitter:title" content="{{site_config.title_home}}">
+<meta name="twitter:description" content="{{site_config.description_home}}">
+<meta name="twitter:image" content="{% if site_config.image_home %}{{site_config.image_home.url}}{% endif %}">
+
+<!-- Canonical -->
+<link rel="canonical" href="{{site_config.canonical_url}}{% url 'site-home' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- TITLE - IMAGE - DESCRIPTION -->
+<section class="my-4">
+    <div class="container">
+        <div class="row align-items-center">
+            {% if site_config.image_home %}
+            <div class="col-12 col-md-5 overflow-hidden d-flex align-items-center justify-content-center" style="font-size: 1.25rem; height: 30vh;">
+                <img  style="height:100%;width:auto;" height="300" width="300" data-src="{{site_config.image_home.url}}" class="lazy" alt="Imagen {{site_config.title_home}}">
+                </p>
+            </div>
+            {% endif %}
+            <div class="col-12 {% if site_config.image_home %}col-md-7{% endif %} text-center" style="font-size: 1.25rem;">
+                <h1 class="pb-3" style="font-size: 2.7rem;">
+                    {{site_config.title_home}}
+                </h1>
+                <p class="text-center">
+                    {{site_config.description_home}}
+                </p>
+            </div>
+        </div>
+        {% if user.is_staff %}
+        <div class="row py-3">
+            <div class="col-12 d-flex justify-content-center align-items-center ">
+                <a target="_blank" href="/admin/website/config/1/change" class="btn btn-primary mr-2">Editar Página Home</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- TEXT -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-safe">
+                {{site_config.text_home|safe}}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block script_extra %} 
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "OnlineStore",
+      "name": "{{site_config.title_home}}",
+      "description": "{{site_config.description_home}}",
+      "image": "{% if site_config.image_home %}{{site_config.image_home.url}}{% endif %}",
+      "logo": "{% if site_config.logo %}{{site_config.logo.url}}{% endif %}",
+      "parentOrganization": {
+        "@type": "OnlineBusiness",
+        "name": "Awesome Marketplace",
+        "url": "http://example.com/"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Spain",
+        "addressLocality": "Madrid"
+      },
+      "foundingDate": "2023-11-16"
+    }
+</script>
+{% endblock %}
