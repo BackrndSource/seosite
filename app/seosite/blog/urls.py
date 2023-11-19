@@ -18,9 +18,9 @@ import os
 
 BLOG_HOME_URL = os.getenv("BLOG_HOME_URL") if os.getenv("BLOG_HOME_URL") else ""
 BLOG_CATEGORY_LIST_URL = os.getenv("BLOG_CATEGORY_LIST_URL") if os.getenv("BLOG_CATEGORY_LIST_URL") else "categories/"
-BLOG_CATEGORY_DETAIL_URL = os.getenv("BLOG_CATEGORY_DETAIL_URL") if os.getenv("BLOG_CATEGORY_DETAIL_URL") else "c/"
+BLOG_CATEGORY_DETAIL_URL = os.getenv("BLOG_CATEGORY_DETAIL_URL") if os.getenv("BLOG_CATEGORY_DETAIL_URL") else ""
 BLOG_POST_LIST_URL = os.getenv("BLOG_POST_LIST_URL") if os.getenv("BLOG_POST_LIST_URL") else "posts/"
-BLOG_POST_DETAIL_URL = os.getenv("BLOG_POST_DETAIL_URL") if os.getenv("BLOG_POST_DETAIL_URL") else "p/"
+BLOG_POST_DETAIL_URL = os.getenv("BLOG_POST_DETAIL_URL") if os.getenv("BLOG_POST_DETAIL_URL") else ""
 
 router = DefaultRouter()
 

@@ -18,9 +18,9 @@ import os
 
 SHOP_HOME_URL = os.getenv("SHOP_HOME_URL") if os.getenv("SHOP_HOME_URL") else ""
 SHOP_CATEGORY_LIST_URL = os.getenv("SHOP_CATEGORY_LIST_URL") if os.getenv("SHOP_CATEGORY_LIST_URL") else "categories/"
-SHOP_CATEGORY_DETAIL_URL = os.getenv("SHOP_CATEGORY_DETAIL_URL") if os.getenv("SHOP_CATEGORY_DETAIL_URL") else "c/"
+SHOP_CATEGORY_DETAIL_URL = os.getenv("SHOP_CATEGORY_DETAIL_URL") if os.getenv("SHOP_CATEGORY_DETAIL_URL") else ""
 SHOP_PRODUCT_LIST_URL = os.getenv("SHOP_PRODUCT_LIST_URL") if os.getenv("SHOP_PRODUCT_LIST_URL") else "products/"
-SHOP_PRODUCT_DETAIL_URL = os.getenv("SHOP_PRODUCT_DETAIL_URL") if os.getenv("SHOP_PRODUCT_DETAIL_URL") else "p/"
+SHOP_PRODUCT_DETAIL_URL = os.getenv("SHOP_PRODUCT_DETAIL_URL") if os.getenv("SHOP_PRODUCT_DETAIL_URL") else ""
 
 
 BLOG_ACTIVE = os.getenv("BLOG_ACTIVE") == "True"
