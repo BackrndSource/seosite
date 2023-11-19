@@ -1,0 +1,20 @@
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 d-flex flex-wrap justify-content-center gap-2 pb-4">
+                <h2 class="text-uppercase font-weight-bold text-center">{{title}}</h2>
+                {% if description %}
+                <p class="pt-3 text-center">{{description}}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container px-0">
+        <div id="commentCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for comment in comments %}
+                {% include "blog/blog/components/comment/item.html" %}
+                {% endfor %}
+            </div>
+        </div>
+</section>

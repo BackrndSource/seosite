@@ -1,0 +1,32 @@
+{% load blog_extras %}
+{% if category.posts %}
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 pb-4 text-center">
+                <a class="" style="font-size: 1.25rem; color: black;" href="{% url 'blog-category-slug' category.slug %}">
+                    <h2 class="text-uppercase font-weight-bold">{{category.title}}</h2>
+                </a>
+                <p class="pt-3">{{category.description}}</p>
+                <a class="" style="font-size: 1.25rem;" href="{% url 'blog-category-slug' category.slug %}">Ver más...</a>
+            </div>
+
+        </div>
+        {% if user.is_staff %}
+        <div class="row pb-3">
+            <div class="col-12 d-flex justify-content-center align-items-center ">
+                <a target="_blank" href="/admin/blog/category/{{category.id}}/change" class="btn btn-primary mr-2"><i class="fa fa-edit"></i>
+                    Editar categoría {{category.title}}</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="row">
+            {% for post in category|posts:":8" %}
+            {% include "blog/blog/components/post/item.html" with post=post %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% endif %}

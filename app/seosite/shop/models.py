@@ -1,95 +1,21 @@
 import datetime
 from django.db import models
-from django.contrib.sitemaps import ping_google
-from tinymce.models import HTMLField
 from django.utils.html import mark_safe
-from django.utils.text import slugify
 from django.urls import reverse
+from common.models import WebComponentModel, CategoryModel, WebsiteConfigModel
 
 
-class WebComponentModel(models.Model):
-    title = models.CharField(unique=True, blank=True, null=False, max_length=254)
-    slug = models.CharField(unique=True, blank=True, null=False, max_length=254)
-    description = models.TextField(blank=True, null=True, max_length=5000)
-    meta_description = models.TextField(blank=True, null=True, max_length=5000)
-    keywords = models.TextField(max_length=5000, null=True, blank=True)
-    text = HTMLField(blank=True, null=True, max_length=20000)
-    visible = models.BooleanField(blank=False, null=False, default=True)
-    featured = models.BooleanField(default=False)
-    created_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
-    last_modified = models.DateTimeField(auto_now=True, blank=False, null=False)
-    publish_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    ext_ref = models.CharField(unique=True, blank=True, null=True, max_length=200)
-
-    def description_tag(self):
-        return self.description[:200] if self.description else None
-
-    description_tag.short_description = "Description"
-
-    def __str__(self):
-        return f"{self.title}"
-
-    class Meta:
-        abstract = True
+class Config(WebsiteConfigModel):
+    shop_active = models.BooleanField(blank=False, null=False, default=True)
+    shop_theme = models.CharField(unique=True, blank=False, null=False, max_length=100, default="shop")
 
 
-class Category(WebComponentModel):
-    parent = models.ForeignKey("self", related_name="childs", on_delete=models.CASCADE, blank=True, null=True)
-    # image = models.URLField(max_length=254, null=True, blank=True)
-    image_width = models.IntegerField(null=True, blank=True)
-    image_height = models.IntegerField(null=True, blank=True)
-    image = models.ImageField(null=True, blank=True, width_field="image_width", height_field="image_height")
-
-    def image_tag(self):
-        return (
-            mark_safe(f'<img src="http://localhost/media/{self.image}" width="100" height="100" />')
-            if self.image
-            else None
-        )
-
-    image_tag.short_description = "Image"
-
-    def description_tag(self):
-        html = f"""
-            <textarea style="width: 551px; height: 57px; position: relative;">{self.description}</textarea>
-        """
-        return mark_safe(html) if self.description else None
-
-    description_tag.short_description = "Description"
-
-    def all_parents(self):
-        # Return all parents until the root for the category
-        parent_categories = []
-
-        def _get_parents(category):
-            if category.parent:
-                _get_parents(category.parent)
-            parent_categories.append(category)
-
-        _get_parents(self)
-        return parent_categories
-
-    # Sitemap.xml
-    def get_absolute_url(self):
-        return reverse("category-slug", args=[self.slug])
-
-    def save(self, *args, **kwargs):
-        if self.id:
-            self.slug = slugify(self.slug) if self.slug else slugify(self.title)
-        super().save(*args, **kwargs)
-        if self.visible:
-            try:
-                # Sitemap.xml - Ping Google on Updates
-                ping_google()
-            except Exception:
-                pass
-
-    class Meta:
-        verbose_name_plural = "categories"
+class Category(CategoryModel):
+    pass
 
 
 class Product(WebComponentModel):
-    categories = models.ManyToManyField(Category, related_name="products", symmetrical=False, blank=True)
+    categories = models.ManyToManyField(Category, related_name="products", blank=True)
     asin = models.CharField(max_length=20, unique=True, null=True)
     url = models.URLField(max_length=254, null=True, blank=True)
     url_affiliate = models.URLField(max_length=254, null=True, blank=True)
@@ -97,6 +23,28 @@ class Product(WebComponentModel):
     real_price = models.FloatField(null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
     rating_count = models.IntegerField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Override save for add all parent categories of the choosen categories for the product
+        # Doesn't works when is executed throught the admin. Correction is in the method save_related() on ProductAdmin() admin.py
+        if self.id:
+            for category in self.categories.all():
+                parents = category.all_parents()
+                for parent in parents:
+                    self.categories.add(parent)
+
+        super().save(*args, **kwargs)
+
+    def create(self, data):
+        product, created = Product.objects.update_or_create(asin=data.get("asin", None), defaults={data})
+        return product
+
+    # Sitemap.xml
+
+    def get_absolute_url(self):
+        return reverse("product-slug", args=[self.slug])
+
+    # Django Admin Tags
 
     def image_tag(self):
         return (
@@ -107,27 +55,13 @@ class Product(WebComponentModel):
             else None
         )
 
-    image_tag.short_description = "Image"
-
     def url_tag(self):
         return mark_safe(f'<a href="{self.url}">{self.url[12:]}</a>') if self.url else None
-
-    url_tag.short_description = "URL"
 
     def url_affiliate_tag(self):
         return (
             mark_safe(f'<a href="{self.url_affiliate}">{self.url_affiliate[12:]}</a>') if self.url_affiliate else None
         )
-
-    url_affiliate_tag.short_description = "URL Affiliate"
-
-    def description_tag(self):
-        html = f"""
-            <textarea style="width: 551px; height: 57px; position: relative;">{self.description}</textarea>
-        """
-        return mark_safe(html) if self.description else None
-
-    description_tag.short_description = "Description"
 
     def categories_tag(self):
         return (
@@ -143,48 +77,20 @@ class Product(WebComponentModel):
             else None
         )
 
-    categories_tag.short_description = "Categories"
-
     def reviews_tag(self):
         return (
             mark_safe(
-                "".join(
-                    [f"<a href=/admin/shop/category/{review.pk}>{review.pk}</a> | " for review in self.reviews.all()]
-                )
+                "".join([f"<a href=/admin/shop/review/{review.pk}>{review.pk}</a> | " for review in self.reviews.all()])
             )
             if self.reviews
             else None
         )
 
+    image_tag.short_description = "Image"
+    url_tag.short_description = "URL"
+    url_affiliate_tag.short_description = "URL Affiliate"
+    categories_tag.short_description = "Categories"
     reviews_tag.short_description = "Reviews"
-
-    def save(self, *args, **kwargs):
-        # Override save for add all parent categories of the choosen categories for the product
-        # Doesn't works when is executed throught the admin. Correction is in the method save_related() on ProductAdmin() admin.py
-        if self.id:
-            for category in self.categories.all():
-                parents = category.all_parents()
-                for parent in parents:
-                    self.categories.add(parent)
-            # Add slug based in title
-            self.slug = slugify(self.slug) if self.slug else slugify(self.title)
-
-        super(Product, self).save(*args, **kwargs)
-
-        if self.visible:
-            try:
-                # Sitemap.xml - Ping Google on Updates
-                ping_google()
-            except Exception:
-                pass
-
-    def create(self, data):
-        product, created = Product.objects.update_or_create(asin=data.get("asin", None), defaults={data})
-        return product
-
-    # Sitemap.xml
-    def get_absolute_url(self):
-        return reverse("product-slug", args=[self.slug])
 
 
 class ProductImage(models.Model):
@@ -196,14 +102,17 @@ class ProductImage(models.Model):
     small = models.URLField(max_length=254, null=True, blank=True)
     position = models.PositiveSmallIntegerField(null=False, default=0)
 
+    # Sitemap.xml
+
+    def get_absolute_url(self):
+        return reverse("productimage-detail", args=[self.pk])
+
+    # Django Admin Tags
+
     def image_tag(self):
         return mark_safe(f'<img src="{self.small}" width="80" height="80" />') if self.small else None
 
     image_tag.short_description = "Image"
-
-    # Sitemap.xml
-    def get_absolute_url(self):
-        return reverse("productimage-detail", args=[self.pk])
 
     def __str__(self):
         return f"{self.product.title[:50]}"
@@ -219,31 +128,12 @@ class Review(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, blank=False, null=False)
     last_modified = models.DateTimeField(auto_now=True, blank=False, null=False)
 
+    # Django Admin Tags
+
     def author_img_tag(self):
         return mark_safe(f'<img src="{self.author_img}" width="50" height="50" />') if self.author_img else None
 
     author_img_tag.short_description = "Author Image"
 
-    # Sitemap.xml
-    def get_absolute_url(self):
-        return reverse("review-detail", args=[self.pk])
-
     def __str__(self):
         return f"{self.title[:50]}"
-
-
-class Config(models.Model):
-    name = models.CharField(unique=True, blank=False, null=False, max_length=100)
-    canonical_url = models.URLField(max_length=254, null=True, blank=True)
-
-    logo = models.ImageField(null=True, blank=True)
-    favicon = models.ImageField(null=True, blank=True)
-    title_home = models.CharField(unique=True, blank=True, null=True, max_length=100)
-    title_decorator = models.CharField(unique=True, blank=True, null=True, max_length=100)
-    description_home = models.TextField(blank=True, null=True, max_length=5000)
-    text_home = HTMLField(blank=True, null=True, max_length=20000)
-    keywords_home = models.TextField(max_length=5000, blank=True, null=True)
-    image_home = models.ImageField(null=True, blank=True)
-
-    shop_active = models.BooleanField(blank=False, null=False, default=True)
-    shop_theme = models.CharField(unique=True, blank=False, null=False, max_length=100, default="giftos")

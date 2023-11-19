@@ -1,0 +1,26 @@
+{% load common_extras %}
+<ul class="shadow bg-white nav border-top border-bottom border-secondary w-100 justify-content-center" style="font-size: 1.2rem;"  id="navbarCategories">
+    {% for category in categories %}
+    {% with childs=category|childs %}
+    {% if childs.count > 0 %}
+    <li class="nav-item dropdown px-4 d-flex flex-wrap align-items-center">
+        <a style="color: black;" href="{% url 'blog-category-slug' category.slug %}">
+            {{category.title}}
+        </a>
+        <a style="color: black;" role="button" href="#" class="nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+        </a>
+        <div class="dropdown-menu">
+            {% for child in childs %}
+            <a class="dropdown-item" href="{% url 'blog-category-slug' child.slug %}">{{child.title}}</a>
+            {% endfor %}
+        </div>
+    </li>
+    {% else %}
+    <li class="nav-item px-4">
+        <a style="color: black;" class="nav-link" href="{% url 'blog-category-slug' category.slug %}">{{category.title}}</a>
+    </li>
+    {% endif %}
+    {% endwith %}
+    {% endfor %}
+</ul>

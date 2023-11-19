@@ -1,0 +1,26 @@
+{% load static %}
+<div class="d-flex justify-content-center align-items-center pt-2">
+    <a href="{% url 'site-home' %}">
+        <img src="{% if blog_config.logo %}{{blog_config.logo.url}}{% endif %}" height="128" width="128" alt="Logo {{blog_config.name}}" style="height:128px;width:auto;" />
+    </a>
+</div>
+<nav class="navbar navbar-expand navbar-light"  style="font-size: 1.25rem;">
+    <div class="collapse navbar-collapse align-items-center justify-content-center" id="navbarSite">
+        <ul class="navbar-nav d-flex justify-content-center">
+            {% if SHOP_ACTIVE %}
+            <li class="nav-item ml-3">
+                <a class="nav-link text-dark" href="{% url 'shop-home' %}">
+                    Tienda
+                </a>
+            </li>
+            {% endif %}
+            {% if BLOG_ACTIVE %}
+            <li class="nav-item ml-3">
+                <a class="nav-link text-dark" href="{% url 'blog-home' %}">
+                    Blog
+                </a>
+            </li> 
+            {% endif %}
+        </ul>
+    </div>
+</nav>

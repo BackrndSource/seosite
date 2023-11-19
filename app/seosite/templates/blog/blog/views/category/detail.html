@@ -1,0 +1,130 @@
+{% extends "blog/blog/layouts/base.html" %}
+{% load common_extras %}
+{% load blog_extras %}
+
+{% block title %}{{category.title}}{% endblock %}
+{% block meta_description %}{{category.meta_description|slice:":159"}}{% endblock %}
+{% block meta_keywords %}{{category.keywords}}{% endblock %}
+{% block meta_extra %}
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="{{blog_config.canonical_url}}{% url 'blog-category-slug' category.slug %}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content="{{category.title}}">
+<meta property="og:description" content="{{category.meta_description}}">
+<meta property="og:image" content="{% if category.image %}{{blog_config.canonical_url}}{{category.image.url}}{% endif %}" />
+<meta property="og:image:width" content="{{category.image_width}}" />
+<meta property="og:image:height" content="{{category.image_height}}" />
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="{{blog_config.canonical_url}}">
+<meta property="twitter:url" content="{{blog_config.canonical_url}}{% url 'blog-category-slug' category.slug %}">
+<meta name="twitter:title" content="{{category.title}}">
+<meta name="twitter:description" content="{{category.meta_description}}">
+<meta name="twitter:image" content="{% if category.image %}{{blog_config.canonical_url}}{{category.image.url}}{% endif %}">
+  
+<!-- Canonical -->
+<link rel="canonical" href="{{blog_config.canonical_url}}{% url 'blog-category-slug' category.slug %}">
+
+{% endblock %}
+
+{% block content %}
+<!-- CATEGORIES NAV -->
+{% include "blog/blog/components/category/nav.html" with categories=blog_categories %}
+
+<!-- CATEGORY DETAILS - DESCRIPTION -->
+<section class="my-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 {% if category.image %}col-md-7{% endif %} text-center" style="font-size: 1.25rem;">
+                <h1 class="pb-3" style="font-size: 2.7rem;">
+                    {{category.title}}
+                </h1>
+                <p class="text-center">
+                    {{category.description}}
+                </p>
+            </div>
+            {% if category.image %}
+            <div class="col-12 col-md-5 overflow-hidden d-flex align-items-center justify-content-center" style="font-size: 1.25rem; height: 30vh;">
+                <img  style="height:100%;width:auto;" height="300" width="300" data-src="{{category.image.url}}" class="lazy" alt="Imagen de la categoría {{category.title}}">
+                </p>
+            </div>
+            {% endif %}
+        </div>
+        {% if user.is_staff %}
+        <div class="row py-3">
+            <div class="col-12 d-flex justify-content-center align-items-center ">
+                <a target="_blank" href="/admin/blog/category/{{category.id}}/change" class="btn btn-primary mr-2">Editar categoría {{category.title}}</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% with subcategories=category|childs %}
+{% if subcategories.count > 0 %}
+<div class="container">
+    <ul class="nav border-top border-bottom border-secondary w-100 justify-content-center text-uppercase"  style="font-size: 1.2rem;"  id="navbarSubCategories">
+        {% for subcategory in subcategories %}
+        {% with childs=subcategory|childs %}
+        {% if childs.count > 0 %}
+        <li class="nav-item dropdown px-4 d-flex flex-wrap justify-content-center align-items-center">
+            <a style="color: black;" href="{% url 'blog-category-slug' subcategory.slug %}">
+                {{subcategory.title}}
+            </a>
+            <a style="color: black;" role="button" href="#" class="nav-link dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </a>
+            <div class="dropdown-menu">
+                {% for child in childs %}
+                <a class="dropdown-item" href="{% url 'blog-category-slug' child.slug %}">{{child.title}}</a>
+                {% endfor %}
+            </div>
+        </li>
+        {% else %}
+        <li class="nav-item px-4">
+            <a style="color: black;" class="nav-link"
+                href="{% url 'blog-category-slug' subcategory.slug %}">{{subcategory.title}}</a>
+        </li>
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- SUB CATEGORIES LIST -->
+{% if category.childs.all.count > 0 %}
+{% include "blog/blog/components/category/list.html" with categories=category|childs %}
+{% endif %}
+
+<!-- FEATURED POSTS -->
+{% if featured_posts.count > 0 %}
+{% include "blog/blog/components/post/list.html" with posts=featured_posts title="No te lo pierdas!"%}
+{% endif %}
+
+<!-- CATEGORY DETAILS - TEXT -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                {{category.text|safe}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ALL POSTS -->
+{% if category|posts is not None %}
+{% include "blog/blog/components/post/list.html" with posts=category|posts title="Todos los posts"%}
+{% endif %}
+
+{% endblock %}
+
+{% block script_extra %} 
+<script type="application/ld+json">
+</script>
+{% endblock %}

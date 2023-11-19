@@ -1,0 +1,106 @@
+{% extends "blog/blog/layouts/base.html" %}
+{% load common_extras %}
+{% load blog_extras %}
+
+{% block title %}{{post.title}}{% endblock %}
+{% block meta_description %}{{post.meta_description|slice:":159"}}{% endblock %}
+{% block meta_keywords %}{{post.keywords}}{% endblock %}
+
+{% block meta_extra %}
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="{{blog_config.canonical_url}}{% url 'blog-post-slug' post.slug %}">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content="{{post.title}}">
+<meta property="og:description" content="{{post.meta_description}}">
+{% for image in post.images.all %}
+<meta property="og:image" content="{{image.image.url}}" />
+{% endfor %}
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="{{blog_config.canonical_url}}">
+<meta property="twitter:url" content="{{blog_config.canonical_url}}{% url 'blog-post-slug' post.slug %}">
+<meta name="twitter:title" content="{{post.title}}">
+<meta name="twitter:description" content="{{post.meta_description}}">
+<meta name="twitter:image" content="{{post.images.first.image.url}}">
+  
+<!-- Canonical -->
+<link rel="canonical" href="{{blog_config.canonical_url}}{% url 'blog-post-slug' post.slug %}">
+{% endblock %}
+
+
+{% block content %}
+
+<!-- Navbar Categories -->
+{% include "blog/blog/components/category/nav.html" with categories=blog_categories active_category=post.categories.last %}
+
+<!-- post DETAILS  -->
+<section class="mb-5 pt-5 pb-4">
+    <div class="container-fluid mb-4 px-5">
+        <div class="row ">
+            <div class="col-xl-5 py-3 d-flex justify-content-center"> 
+                <div class="carousel slide overflow-hidden" style="max-width: 500px;" data-ride="carousel" id="postImagesCarousel">
+                    <div class="carousel-inner" role="listbox">
+                        {% for image in post.images.all %}
+                        <div class="carousel-item {% if forloop.first %} active{% endif %}">
+                            <div style="height:50vh">
+                                <a target="_blank" href="{{post.url_affiliate}}">
+                                    <img class="lazy d-block" height="500" width="500" src="{{image.image.url}}" data-src="{{image.image.url}}"
+                                        alt="Imagen del post" style="height:100%;width:auto;">
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-7 pl-5">
+                <h1>{{post.title}}</h1>
+                
+                <div class="d-flex align-items-center mt-4 mb-1" style="font-size: 1.25rem;">
+                    <p>{{post.description}}</p>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+        {% if user.is_staff %}
+        <div class="row pt-4">
+            <div class="col-12 d-flex justify-content-center">
+                <a target="_blank" href="/admin/blog/post/{{post.id}}/change" class="btn btn-primary mx-1"><i class="fa fa-edit"></i> Editar</a>
+                <a target="_blank" href="/admin/blog/post/{{post.id}}/delete" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- post DETAILS - TEXT -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {{post.text|safe}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMMENTS LIST -->
+{% if post.comments.all.count > 0 %}
+{% include "blog/blog/components/comment/carousel.html" with title="Comentarios" comments=post.comments.all %}
+{% endif %}
+
+<!-- POSTS IN SAME CATEGORY LIST -->
+{% include "blog/blog/components/post/list.html" with posts=post.categories.last|posts|slice:":4" title="También te puede interesar" %}
+
+<!-- CATEGORIES LIST -->
+{% include "blog/blog/components/category/list.html" with categories=post.categories.all %}
+
+{% endblock %}
+{% block script_extra %} 
+
+<script type="application/ld+json">
+    </script>
+{% endblock %}

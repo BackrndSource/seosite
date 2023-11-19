@@ -13,12 +13,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+SHOP_ACTIVE = os.getenv("SHOP_ACTIVE") == "True"
+BLOG_ACTIVE = os.getenv("BLOG_ACTIVE") == "True"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG") if os.getenv("DEBUG") else False
+DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",") if os.getenv("ALLOWED_HOSTS") else []
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
@@ -41,10 +43,12 @@ INSTALLED_APPS = [
     "django_filters",
     "tinymce",
     "mptt",
-    "shop",  #
-    "blog",  #
+    "common",  #
+    "blog",
+    "shop",
     "corsheaders",
 ]
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -60,19 +64,28 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "seosite.urls"
 
+CONTEXT_PROCESSORS = [
+    "django.template.context_processors.debug",
+    "django.template.context_processors.request",
+    "django.contrib.auth.context_processors.auth",
+    "django.contrib.messages.context_processors.messages",
+    "common.context_processors.site_config",
+]
+
+BLOG_CONTEXT_PROCESSORS = ["blog.context_processors.blog_config"]
+SHOP_CONTEXT_PROCESSORS = ["shop.context_processors.shop_config"]
+
+if SHOP_ACTIVE:
+    CONTEXT_PROCESSORS = CONTEXT_PROCESSORS + SHOP_CONTEXT_PROCESSORS
+if BLOG_ACTIVE:
+    CONTEXT_PROCESSORS = CONTEXT_PROCESSORS + BLOG_CONTEXT_PROCESSORS
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
+        "OPTIONS": {"context_processors": CONTEXT_PROCESSORS},
     },
 ]
 
@@ -144,7 +157,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "/app/static/"
+STATIC_ROOT = "/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -152,7 +165,7 @@ STATIC_ROOT = "/app/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = "/app/media/"
+MEDIA_ROOT = "/media/"
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",

@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 from django import template
 
 register = template.Library()
@@ -28,14 +28,9 @@ def price_int(value):
 
 
 @register.filter
-def childs(category):
-    return category.childs.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now()).order_by("featured")
-
-
-@register.filter
 def products(category, num=8):
     return (
         category.products.filter(visible=True)
-        .exclude(publish_date__gte=datetime.datetime.now())
+        .exclude(publish_date__gte=timezone.now())
         .order_by("-featured", "-rating_count", "-last_modified")[:num]
     )

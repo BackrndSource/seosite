@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-from .models import Product, Category
+from .models import Post, Category
 
 
 class CategorySitemap(Sitemap):
@@ -13,12 +13,12 @@ class CategorySitemap(Sitemap):
         return obj.last_modified
 
 
-class ProductSitemap(Sitemap):
+class PostSitemap(Sitemap):
     changefreq = "daily"
     priority = 0.5
 
     def items(self):
-        return Product.objects.filter(visible=True)
+        return Post.objects.filter(visible=True)
 
     def lastmod(self, obj):
         return obj.last_modified

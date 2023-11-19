@@ -1,0 +1,19 @@
+{% extends "common/common/layouts/base.html" %}
+
+<!-- Title -->
+{% block title_end %} {{shop_config.title_decorator}}{% endblock %}
+
+<!-- Favicon -->
+{% block favicon %}
+<link rel="icon" type="image/x-icon" href="{% if shop_config.favicon %}{{shop_config.favicon.url}}{% endif %}">
+{% endblock %}
+
+<!-- Nav -->
+{% block nav %}
+{% include "shop/shop/components/nav.html" %}
+{% endblock %}
+
+<!-- Footer -->
+{% block footer %}
+{% include "shop/shop/components/footer.html" %}
+{% endblock %}

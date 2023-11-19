@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>{% block title %}{% endblock %}{% block title_end %} {{site_config.title_decorator}}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+
+    {% block meta_extra %}
+    {% endblock %}
+
+    <!-- Favicon -->
+    {% block favicon %}
+    <link rel="icon" type="image/x-icon" href="{% if site_config.favicon %}{{site_config.favicon.url}}{% endif %}">
+    {% endblock %}
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- LazyLoad -->
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.5/dist/lazyload.min.js"></script>
+</head>
+
+<body class="" style="
+color: #101010;
+background-color: rgb(249, 249, 249);
+font-family:'poppins',sans-serif;">
+    <!-- Header -->
+    {% block header %}
+    <header>
+        <!-- Nav -->
+        {% block nav %} {% include "common/common/components/nav.html" %} {% endblock %}
+        <!-- Hero -->
+        {% block hero %}{% endblock %}
+    </header>
+    {% endblock %}
+    <!-- Main content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    {% block footer %}
+    {% include "common/common/components/footer.html" %}
+    {% endblock %}
+    <!-- JQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script async src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <!-- LazyLoad Init -->
+    <script>
+        var lazyLoadInstance = new LazyLoad({});
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{SITE_GTAG_ID}}"></script>
+    <script defer>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{SITE_GTAG_ID}}');
+    </script>
+    {% block script_extra %}{% endblock %}
+</body>
+
+
+</html>
