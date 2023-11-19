@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "django_filters",
     "tinymce",
     "mptt",
-    "common",  #
+    "common",
+    "website",
     "blog",
     "shop",
     "corsheaders",
@@ -69,7 +70,7 @@ CONTEXT_PROCESSORS = [
     "django.template.context_processors.request",
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
-    "common.context_processors.site_config",
+    "website.context_processors.site_config",
 ]
 
 BLOG_CONTEXT_PROCESSORS = ["blog.context_processors.blog_config"]

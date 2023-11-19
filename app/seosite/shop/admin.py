@@ -64,19 +64,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Config)
 class ConfigAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "canonical_url",
-        "logo",
-        "title_home",
-        "title_decorator",
-        "shop_active",
-        "shop_theme",
-    )
+    list_display = ("name", "canonical_url", "logo", "title_home", "title_decorator")
     search_fields = ("title_home", "name", "canonical_url")
-    list_filter = (
-        "shop_active",
-        "shop_theme",
-    )
     form = ConfigForm
     list_per_page = 10

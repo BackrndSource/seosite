@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 from django.utils.html import mark_safe
 from django.urls import reverse
@@ -6,8 +5,7 @@ from common.models import WebComponentModel, CategoryModel, WebsiteConfigModel
 
 
 class Config(WebsiteConfigModel):
-    shop_active = models.BooleanField(blank=False, null=False, default=True)
-    shop_theme = models.CharField(unique=True, blank=False, null=False, max_length=100, default="shop")
+    pass
 
 
 class Category(CategoryModel):
