@@ -134,98 +134,25 @@
 
 <!-- ALL PRODUCTS -->
 {% if category|products is not None %}
+
+{% with childs=category|childs %}
+{% if childs.count > 0 %}
+{% include "shop/shop/components/product/list.html" with products=category|products:16 title="Más productos"%}
+{% else %}
 {% include "shop/shop/components/product/list.html" with products=category|products title="Todos los productos"%}
+{% endif %}
+{% endwith %}
+
 {% endif %}
 
 {% endblock %}
 
-{% block script_extra %} 
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "url": "{{shop_config.canonical_url}}{% url 'category-slug' category.slug %}",
-        "itemListElement":[
-            {% for product in category|products %}
-            {
-                "@type": "Product",
-                "position": "{{forloop.counter}}",
-                "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
-                "asin": "{{product.asin}}",
-                "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": {{product.rating|stringformat:'.2f'}},
-                    "reviewCount": {{product.rating_count}}
-                },
-                "description": "{{product.description}}",
-                "name": "{{product.title}}",
-                "image": "{{product.images.first.large}}",
-                "offers": {
-                    "@type": "Offer",
-                    "availability": "https://schema.org/InStock",
-                    "price": {{product.price|stringformat:'.2f'}},
-                    "priceCurrency": "EUR",
-                    "priceValidUntil": "2025-01-01",
-                    "shippingDetails": {
-                        "@type": "OfferShippingDetails",
-                        "shippingDestination": {
-                            "@type": "DefinedRegion",
-                            "addressCountry": "ES"
-                        },
-                        "deliveryTime": {
-                            "@type": "ShippingDeliveryTime",
-                            "businessDays": {
-                                "@type": "OpeningHoursSpecification",
-                                "dayOfWeek": [
-                                    "https://schema.org/Monday",
-                                    "https://schema.org/Tuesday",
-                                    "https://schema.org/Wednesday",
-                                    "https://schema.org/Thursday",
-                                    "https://schema.org/Friday",
-                                    "https://schema.org/Saturday",
-                                    "https://schema.org/Sunday"
-                                ]
-                            },
-                            "cutoffTime": "12:00:15Z",
-                            "handlingTime": {
-                                "@type": "QuantitativeValue",
-                                "minValue": 1,
-                                "maxValue": 2,
-                                "unitCode": "d"
-                            },
-                            "transitTime": {
-                                "@type": "QuantitativeValue",
-                                "minValue": 1,
-                                "maxValue": 3,
-                                "unitCode": "d"
-                            }
-                        },
-                        "shippingRate": {
-                            "@type": "MonetaryAmount",
-                            "value": 0,
-                            "currency": "EUR"
-                        }
-                    },
-                    "hasMerchantReturnPolicy": {
-                        "@type": "MerchantReturnPolicy",
-                        "returnPolicyCategory": "http://schema.org/MerchantReturnUnlimitedWindow",
-                        "returnFees": "http://schema.org/FreeReturn",
-                        "refundType": "https://schema.org/FullRefund",
-                        "returnMethod": "http://schema.org/ReturnByMail",
-                        "applicableCountry": "ES",
-                        "returnPolicyCountry": "ES",
-                        "merchantReturnDays": 30,
-                        "merchantReturnLink": "https://deniños.com/politica-de-devolucion",
-                        "restockingFee": {
-                        "@type": "MonetaryAmount",
-                        "value": 0,
-                        "currency": "EUR"
-                        }
-                    }
-                }
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ]
-    }
-</script>
+{% block script_extra %}
+{% with childs=category|childs %}
+{% if childs.count > 0 %}
+{% include "shop/shop/components/category/detail_scheme.html" with products=category|products:16 %}
+{% else %}
+{% include "shop/shop/components/category/detail_scheme.html" with products=category|products %}
+{% endif %}
+{% endwith %}
 {% endblock %}

@@ -28,9 +28,10 @@ def price_int(value):
 
 
 @register.filter
-def products(category, num=8):
-    return (
+def products(category, num=None):
+    products = (
         category.products.filter(visible=True)
         .exclude(publish_date__gte=timezone.now())
-        .order_by("-featured", "-rating_count", "-last_modified")[:num]
+        .order_by("-featured", "-rating_count", "-last_modified")
     )
+    return products[:num] if num else products
