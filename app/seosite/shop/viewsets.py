@@ -14,7 +14,7 @@ from .serializers import (
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from django.utils import timezone
+import datetime
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

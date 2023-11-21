@@ -2,14 +2,14 @@ from .models import Category, Product, ProductImage, Review, Config
 
 from django.views.generic import ListView, DetailView
 
-from django.utils import timezone
+import datetime
 
 import os
 
 
 class HomeView(ListView):
     model = Category
-    queryset = Category.objects.filter(visible=True)
+    queryset = Category.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/home.html"
 
     def get_context_data(self, **kwargs):
@@ -19,13 +19,17 @@ class HomeView(ListView):
 
 class ProductListView(ListView):
     model = Product
-    queryset = Product.objects.filter(visible=True).exclude(publish_date__gte=timezone.now())
+    queryset = (
+        Product.objects.filter(visible=True)
+        .exclude(publish_date__gte=datetime.datetime.now())
+        .order_by("-last_modified", "-rating_count", "-rating")
+    )
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/product/list.html"
 
 
 class ProductDetailView(DetailView):
     context_object_name = "product"
-    queryset = Product.objects.filter(visible=True).exclude(publish_date__gte=timezone.now())
+    queryset = Product.objects.filter(visible=True)
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/product/detail.html"
 
     def get_context_data(self, **kwargs):
@@ -35,7 +39,7 @@ class ProductDetailView(DetailView):
 
 class CategoryListView(ListView):
     model = Category
-    queryset = Category.objects.filter(visible=True)
+    queryset = Category.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/category/list.html"
 
     def get_context_data(self, **kwargs):
@@ -45,13 +49,13 @@ class CategoryListView(ListView):
 
 class CategoryDetailView(DetailView):
     context_object_name = "category"
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(visible=True)
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/category/detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # ALL PRODUCTS
-        products = self.get_object().products.filter(visible=True).exclude(publish_date__gte=timezone.now())
+        products = self.get_object().products.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
         # REVIEWS
         reviews = []
         for product in products:

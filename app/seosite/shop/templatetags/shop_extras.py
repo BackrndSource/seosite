@@ -1,4 +1,4 @@
-from django.utils import timezone
+import datetime
 from django import template
 
 register = template.Library()
@@ -31,7 +31,7 @@ def price_int(value):
 def products(category, num=None):
     products = (
         category.products.filter(visible=True)
-        .exclude(publish_date__gte=timezone.now())
+        .exclude(publish_date__gte=datetime.datetime.now())
         .order_by("-featured", "-rating_count", "-last_modified")
     )
     return products[:num] if num else products
