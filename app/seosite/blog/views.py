@@ -18,7 +18,6 @@ class HomeView(ListView):
 
 
 class PostListView(ListView):
-    model = Post
     queryset = (
         Post.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now()).order_by("-last_modified")
     )
@@ -26,29 +25,26 @@ class PostListView(ListView):
 
 
 class PostDetailView(DetailView):
+    model = Post
     context_object_name = "post"
-    queryset = Post.objects.filter(visible=True)
     template_name = f"blog/{os.getenv('BLOG_TEMPLATE')}/views/post/detail.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_queryset(self):
+        return super().get_queryset().filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
 
 
 class CategoryListView(ListView):
-    model = Category
     queryset = Category.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = f"blog/{os.getenv('BLOG_TEMPLATE')}/views/category/list.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 class CategoryDetailView(DetailView):
+    model = Category
     context_object_name = "category"
-    queryset = Category.objects.filter(visible=True)
     template_name = f"blog/{os.getenv('BLOG_TEMPLATE')}/views/category/detail.html"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

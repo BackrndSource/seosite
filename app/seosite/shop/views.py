@@ -1,3 +1,5 @@
+from typing import Any
+from django.db import models
 from .models import Category, Product, ProductImage, Review, Config
 
 from django.views.generic import ListView, DetailView
@@ -8,17 +10,11 @@ import os
 
 
 class HomeView(ListView):
-    model = Category
     queryset = Category.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/home.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 class ProductListView(ListView):
-    model = Product
     queryset = (
         Product.objects.filter(visible=True)
         .exclude(publish_date__gte=datetime.datetime.now())
@@ -28,29 +24,26 @@ class ProductListView(ListView):
 
 
 class ProductDetailView(DetailView):
+    model = Product
     context_object_name = "product"
-    queryset = Product.objects.filter(visible=True)
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/product/detail.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_queryset(self):
+        return super().get_queryset().filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
 
 
 class CategoryListView(ListView):
-    model = Category
     queryset = Category.objects.filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/category/list.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 class CategoryDetailView(DetailView):
+    model = Category
     context_object_name = "category"
-    queryset = Category.objects.filter(visible=True)
     template_name = f"shop/{os.getenv('SHOP_TEMPLATE')}/views/category/detail.html"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(visible=True).exclude(publish_date__gte=datetime.datetime.now())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
