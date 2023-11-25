@@ -13,18 +13,6 @@
 <meta property="og:locale" content="es_ES" />
 <meta property="og:title" content="{{category.title}}">
 <meta property="og:description" content="{{category.meta_description}}">
-<meta property="og:image" content="{% if category.image %}{{blog_config.canonical_url}}{{category.image.url}}{% endif %}" />
-<meta property="og:image:width" content="{{category.image_width}}" />
-<meta property="og:image:height" content="{{category.image_height}}" />
-{% if category.image %}
-<meta property="og:image" content="{{blog_config.canonical_url}}{{category.image.url}}" />
-<meta property="og:image:width" content="{{category.image_width}}" />
-<meta property="og:image:height" content="{{category.image_height}}" />
-{% elif blog_config.image_home %}
-<meta property="og:image" content="{{blog_config.canonical_url}}{{blog_config.image_home.url}}" />
-{% elif site_config.image_home %}
-<meta property="og:image" content="{{site_config.canonical_url}}{{site_config.image_home.url}}" />
-{% endif %}
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
@@ -32,14 +20,16 @@
 <meta property="twitter:url" content="{{blog_config.canonical_url}}{% url 'blog-category-slug' category.slug %}">
 <meta name="twitter:title" content="{{category.title}}">
 <meta name="twitter:description" content="{{category.meta_description}}">
-<meta name="twitter:image" content="{% if category.image %}{{blog_config.canonical_url}}{{category.image.url}}{% endif %}">
 
 {% if category.image %}
-<meta name="twitter:image" content="{{blog_config.canonical_url}}{{category.image.url}}">
+<meta property="og:image" content="{{blog_config.canonical_url}}{{category.image.url}}" />
+<meta property="twitter:image" content="{{blog_config.canonical_url}}{{category.image.url}}" />
 {% elif blog_config.image_home %}
-<meta name="twitter:image" content="{{blog_config.canonical_url}}{{blog_config.image_home.url}}">
+<meta property="og:image" content="{{blog_config.canonical_url}}{{blog_config.image_home.url}}" />
+<meta property="twitter:image" content="{{blog_config.canonical_url}}{{blog_config.image_home.url}}" />
 {% elif site_config.image_home %}
-<meta name="twitter:image" content="{{site_config.canonical_url}}{{site_config.image_home.url}}">
+<meta property="og:image" content="{{site_config.canonical_url}}{{site_config.image_home.url}}" />
+<meta property="twitter:image" content="{{site_config.canonical_url}}{{site_config.image_home.url}}" />
 {% endif %}
   
 <!-- Canonical -->

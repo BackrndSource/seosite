@@ -8,7 +8,7 @@
 
 {% block meta_extra %}
 <!-- Facebook Meta Tags -->
-<meta property="og:url" content="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
+<meta property="og:url" content="{{shop_config.canonical_url}}{% url 'shop-product-slug' product.slug %}">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="es_ES" />
 <meta property="og:title" content="{{product.title}}">
@@ -20,13 +20,13 @@
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta property="twitter:domain" content="{{shop_config.canonical_url}}">
-<meta property="twitter:url" content="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
+<meta property="twitter:url" content="{{shop_config.canonical_url}}{% url 'shop-product-slug' product.slug %}">
 <meta name="twitter:title" content="{{product.title}}">
 <meta name="twitter:description" content="{{product.meta_description}}">
 <meta name="twitter:image" content="{{product.images.first.large}}">
   
 <!-- Canonical -->
-<link rel="canonical" href="{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}">
+<link rel="canonical" href="{{shop_config.canonical_url}}{% url 'shop-product-slug' product.slug %}">
 {% endblock %}
 
 
@@ -120,7 +120,7 @@
         "@context": "https://schema.org",
         "@type": "Product",
         "asin": "{{product.asin}}",
-        "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
+        "url":"{{shop_config.canonical_url}}{% url 'shop-product-slug' product.slug %}",
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": {{product.rating|stringformat:'.2f'}},

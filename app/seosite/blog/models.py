@@ -14,7 +14,9 @@ class Image(ImageModel):
 
 
 class Category(CategoryModel):
-    pass
+    # Sitemap.xml
+    def get_absolute_url(self):
+        return reverse("blog-category-slug", args=[self.slug])
 
 
 class Post(WebComponentModel):
@@ -38,7 +40,7 @@ class Post(WebComponentModel):
     # Sitemap.xml
 
     def get_absolute_url(self):
-        return reverse("post-slug", args=[self.slug])
+        return reverse("blog-post-slug", args=[self.slug])
 
     # Django Admin Tags
 

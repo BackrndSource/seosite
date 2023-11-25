@@ -7,7 +7,7 @@
             <img alt="Product image for {{product.title}}" class="lazy" width="200" height="200" src="{{ product.images.first.thumb }}"
                 data-src="{{ product.images.first.medium }}" style="height:200px;width:auto;"/>
         </a>
-        <a class="pt-3" href="{% url 'product-slug' product.slug %}">
+        <a class="pt-3" href="{% url 'shop-product-slug' product.slug %}">
             <h3 class="lh-1 overflow-hidden" style="height: 4.5rem; color: black; font-size: 1.25rem;">
                 {{product.title}}
             </h3>

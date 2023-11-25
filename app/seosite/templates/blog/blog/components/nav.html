@@ -21,6 +21,15 @@
                 </a>
             </li> 
             {% endif %}
+            {% for page in site_pages %}
+            {% if page.featured %}
+            <li class="nav-item ml-3">
+                <a class="nav-link" href="{% url 'site-page-slug' page.slug%}">
+                    {{page.name}}
+                </a>
+            </li> 
+            {% endif %}
+            {% endfor %}
         </ul>
     </div>
 </nav>

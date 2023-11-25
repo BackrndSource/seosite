@@ -39,6 +39,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
             return Response(CategorySerializer(category).data) if category else Response()
         return Response()
 
+    def list(self, request, *args, **kwargs):
+        if request.query_params.get("all", False):
+            self.pagination_class = None
+        return super().list(request, *args, **kwargs)
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.prefetch_related("images", "reviews")

@@ -43,7 +43,13 @@ urlpatterns = [
     # Category
     path(f"{SHOP_HOME_URL}", HomeView.as_view(), name="shop-home"),
     # path("categorias/", CategoryListView.as_view(), name="category-list"),
-    path(f"{SHOP_HOME_URL}{SHOP_CATEGORY_DETAIL_URL}<slug:slug>/", CategoryDetailView.as_view(), name="category-slug"),
+    path(
+        f"{SHOP_HOME_URL}{SHOP_CATEGORY_DETAIL_URL}<slug:slug>/",
+        CategoryDetailView.as_view(),
+        name="shop-category-slug",
+    ),
     # Product
-    path(f"{SHOP_HOME_URL}{SHOP_PRODUCT_DETAIL_URL}<slug:slug>/", ProductDetailView.as_view(), name="product-slug"),
+    path(
+        f"{SHOP_HOME_URL}{SHOP_PRODUCT_DETAIL_URL}<slug:slug>/", ProductDetailView.as_view(), name="shop-product-slug"
+    ),
 ]

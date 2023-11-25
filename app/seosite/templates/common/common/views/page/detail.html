@@ -1,0 +1,85 @@
+{% extends "common/common/layouts/base.html" %}
+{% load common_extras %}
+
+{% block title %}{{page.title}}{% endblock %}
+{% block meta_description %}{{page.meta_description|slice:":159"}}{% endblock %}
+{% block meta_keywords %}{{page.keywords}}{% endblock %}
+{% block meta_extra %}
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="{{site_config.canonical_url}}{% url 'site-page-slug' page.slug %}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content="{{page.title}}">
+<meta property="og:description" content="{{page.meta_description}}">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="{{site_config.canonical_url}}">
+<meta property="twitter:url" content="{{site_config.canonical_url}}{% url 'site-page-slug' page.slug %}">
+<meta name="twitter:title" content="{{page.title}}">
+<meta name="twitter:description" content="{{page.meta_description}}">
+
+{% if page.image %}
+<meta property="og:image" content="{{site_config.canonical_url}}{{page.image.url}}" />
+<meta property="twitter:image" content="{{site_config.canonical_url}}{{page.image.url}}" />
+{% elif site_config.image_home %}
+<meta property="og:image" content="{{site_config.canonical_url}}{{site_config.image_home.url}}" />
+<meta property="twitter:image" content="{{site_config.canonical_url}}{{site_config.image_home.url}}" />
+{% endif %}
+
+  
+<!-- Canonical -->
+<link rel="canonical" href="{{site_config.canonical_url}}{% url 'site-page-slug' page.slug %}">
+
+{% endblock %}
+
+{% block content %}
+
+<!-- PAGE DETAILS - DESCRIPTION -->
+<section class="my-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 {% if page.image %}col-md-7{% endif %} text-center" style="font-size: 1.25rem;">
+                <h1 class="pb-3" style="font-size: 2.7rem;">
+                    {{page.title}}
+                </h1>
+                <p class="text-center">
+                    {{page.description}}
+                </p>
+            </div>
+            {% if page.image %}
+            <div class="col-12 col-md-5 overflow-hidden d-flex align-items-center justify-content-center" style="font-size: 1.25rem; height: 30vh;">
+                <img  style="height:100%;width:auto;" height="300" width="300" data-src="{{page.image.url}}" class="lazy" alt="Imagen de la categoría {{page.title}}">
+                </p>
+            </div>
+            {% endif %}
+        </div>
+        {% if user.is_staff %}
+        <div class="row py-3">
+            <div class="col-12 d-flex justify-content-center align-items-center ">
+                <a target="_blank" href="/admin/site/page/{{page.id}}/change" class="btn btn-primary mr-2">Editar página {{page.title}}</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- PAGE DETAILS - TEXT -->
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-safe">
+                {{page.text|safe}}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block script_extra %} 
+<script type="application/ld+json">
+</script>
+{% endblock %}

@@ -2,13 +2,13 @@
     {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "url": "{{shop_config.canonical_url}}{% url 'category-slug' category.slug %}",
+        "url": "{{shop_config.canonical_url}}{% url 'shop-category-slug' category.slug %}",
         "itemListElement":[
             {% for product in products %}
             {
                 "@type": "Product",
                 "position": "{{forloop.counter}}",
-                "url":"{{shop_config.canonical_url}}{% url 'product-slug' product.slug %}",
+                "url":"{{shop_config.canonical_url}}{% url 'shop-product-slug' product.slug %}",
                 "asin": "{{product.asin}}",
                 "aggregateRating": {
                     "@type": "AggregateRating",

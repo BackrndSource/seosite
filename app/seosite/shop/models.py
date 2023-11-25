@@ -9,7 +9,9 @@ class Config(WebsiteConfigModel):
 
 
 class Category(CategoryModel):
-    pass
+    # Sitemap.xml
+    def get_absolute_url(self):
+        return reverse("shop-category-slug", args=[self.slug])
 
 
 class Product(WebComponentModel):
@@ -40,18 +42,9 @@ class Product(WebComponentModel):
     # Sitemap.xml
 
     def get_absolute_url(self):
-        return reverse("product-slug", args=[self.slug])
+        return reverse("shop-product-slug", args=[self.slug])
 
     # Django Admin Tags
-
-    def image_tag(self):
-        return (
-            mark_safe(
-                f'<a href=/admin/shop/productimage/{self.images.first().pk}><img src="{self.images.first().small}" width="80" height="80" /></a>'
-            )
-            if self.images.first()
-            else None
-        )
 
     def url_tag(self):
         return mark_safe(f'<a href="{self.url}">{self.url[12:]}</a>') if self.url else None
@@ -84,7 +77,6 @@ class Product(WebComponentModel):
             else None
         )
 
-    image_tag.short_description = "Image"
     url_tag.short_description = "URL"
     url_affiliate_tag.short_description = "URL Affiliate"
     categories_tag.short_description = "Categories"
@@ -106,7 +98,6 @@ class ProductImage(models.Model):
         return reverse("productimage-detail", args=[self.pk])
 
     # Django Admin Tags
-
     def image_tag(self):
         return mark_safe(f'<img src="{self.small}" width="80" height="80" />') if self.small else None
 
