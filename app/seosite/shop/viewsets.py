@@ -50,7 +50,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
     search_fields = ["title", "ext_ref"]
-    filterset_fields = "__all__"
+    filterset_fields = ["categories__title", "featured", "visible"]
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
