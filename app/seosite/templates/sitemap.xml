@@ -3,7 +3,7 @@
 {% for sitemap in sitemaps %}
     <sitemap>
         <loc>{{ sitemap.location }}</loc>
-        <lastmod>{{ sitemap.last_mod|date:"Y-m-d" }}</lastmod>
+        {% if sitemap.last_mod %}<lastmod>{{ sitemap.last_mod|date:"Y-m-d" }}</lastmod>{%endif%}
     </sitemap>
 {% endfor %}
 </sitemapindex>
