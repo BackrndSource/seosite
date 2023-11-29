@@ -58,9 +58,9 @@
             <div class="col-xl-7 pl-5">
                 <h1>{{product.title}}</h1>
                 <div class="my-1 d-flex gap-2 ">
-                    <p class="mr-2 text-success" style="font-size: 2.5rem;">{{product.price}}€</p>
+                    <p class="mr-2 text-success" style="font-size: 2.5rem;">{{product.price|floatformat:2}}€</p>
                     {% if product.real_price %}
-                    <span class="mx-2 text-danger pt-2">Antes: {{product.real_price}}€</span>
+                    <span class="mx-2 text-danger pt-2">Antes: {{product.real_price|floatformat:2}}€</span>
                     {% endif %}
                 </div>
                 <div class="d-flex flex-row mb-2">
