@@ -57,7 +57,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
     search_fields = ["title", "ext_ref"]
-    filterset_fields = ["categories__title", "featured", "visible"]
+    filterset_fields = ["categories", "featured", "visible"]
     ordering_fields = "__all__"
     ordering = ["-last_modified"]
     permission_classes = [IsAuthenticated]
