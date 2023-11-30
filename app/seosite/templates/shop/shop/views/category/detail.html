@@ -115,6 +115,16 @@
 {% include "shop/shop/components/product/list.html" with products=promo_products.all|slice:":4" title="Últimas oportunidades"%}
 {% endif %}
 
+<!-- BEST SELLING PRODUCTS -->
+{% if bestselling_products.count > 0 %}
+{% include "shop/shop/components/product/list.html" with products=bestselling_products.all|slice:":4" title="Los más vendidos"%}
+{% endif %}
+
+<!-- BEST RATED PRODUCTS -->
+{% if bestrated_products.count > 0 %}
+{% include "shop/shop/components/product/list.html" with products=bestrated_products.all|slice:":4" title="Mejor valorados"%}
+{% endif %}
+
 <!-- CATEGORY DETAILS - TEXT -->
 <section class="my-5">
     <div class="container">
@@ -126,19 +136,9 @@
     </div>
 </section>
 
-<!-- BEST SELLING PRODUCTS -->
-{% if bestselling_products.count > 0 %}
-{% include "shop/shop/components/product/list.html" with products=bestselling_products.all|slice:":4" title="Los más vendidos"%}
-{% endif %}
-
 <!-- REVIEWS LIST -->
 {% if reviews.count > 0 %}
 {% include "shop/shop/components/review/carousel.html" with title=category.title reviews=reviews %}
-{% endif %}
-
-<!-- BEST RATED PRODUCTS -->
-{% if bestrated_products.count > 0 %}
-{% include "shop/shop/components/product/list.html" with products=bestrated_products.all|slice:":4" title="Mejor valorados"%}
 {% endif %}
 
 <!-- ALL PRODUCTS -->
