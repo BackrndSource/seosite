@@ -61,9 +61,14 @@ def getUrlPatterns():
             "sitemap.xml",
             index,
             {"sitemaps": sitemaps, "template_name": "sitemap_index.xml"},
+            name="django.contrib.sitemaps.views.index",
+        ),
+        path(
+            "sitemap-<section>.xml",
+            sitemap,
+            {"sitemaps": sitemaps, "template_name": "sitemap.xml"},
             name="django.contrib.sitemaps.views.sitemap",
         ),
-        path("sitemap-<section>.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
         # Robots.txt
         path("robots.txt", robots_txt),
     ]
