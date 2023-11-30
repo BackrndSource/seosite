@@ -17,7 +17,7 @@ class CategorySitemap(Sitemap):
 
 
 class ProductSitemap(Sitemap):
-    changefreq = "daily"
+    changefreq = "weekly"
     priority = 0.5
     protocol = "https"
 

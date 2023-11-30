@@ -60,7 +60,7 @@ def getUrlPatterns():
         path(
             "sitemap.xml",
             index,
-            {"sitemaps": sitemaps, "template_name": "sitemap.xml"},
+            {"sitemaps": sitemaps, "template_name": "sitemap_index.xml"},
             name="django.contrib.sitemaps.views.sitemap",
         ),
         path("sitemap-<section>.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
