@@ -13,7 +13,7 @@ def robots_txt(request):
     User-agent: *
     Disallow:
 
-    Sitemap: {request.build_absolute_uri(reverse("django.contrib.sitemaps.views.sitemap"))}
+    Sitemap: {request.build_absolute_uri(reverse("django.contrib.sitemaps.views.index"))}
     """
     return HttpResponse(robots_txt_content, content_type="text/plain")
 
